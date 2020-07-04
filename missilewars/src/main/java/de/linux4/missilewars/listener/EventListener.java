@@ -48,6 +48,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.linux4.missilewars.MissileWars;
+import de.linux4.missilewars.game.AnimatedExplosion;
 import de.linux4.missilewars.game.Game;
 import de.linux4.missilewars.game.Game.PlayerTeam;
 import de.linux4.missilewars.game.SpawnItems;
