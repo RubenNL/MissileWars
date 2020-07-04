@@ -80,7 +80,7 @@ public class GameManager implements Runnable {
 	}
 
 	public void startGame() {
-		countdown.time = 5;
+		countdown.time = 1;
 	}
 
 }
