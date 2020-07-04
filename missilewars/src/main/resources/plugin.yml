@@ -37,3 +37,6 @@ commands:
    reset:
        description: reset
        usage: /<command>
+   join:
+       description: join
+       usage: /<command>
