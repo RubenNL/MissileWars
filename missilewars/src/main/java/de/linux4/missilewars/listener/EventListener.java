@@ -48,6 +48,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.linux4.missilewars.MissileWars;
+import de.linux4.missilewars.game.AnimatedExplosion;
 import de.linux4.missilewars.game.Game;
 import de.linux4.missilewars.game.Game.PlayerTeam;
 import de.linux4.missilewars.game.SpawnItems;
@@ -269,6 +270,16 @@ public class EventListener implements Listener {
 		} else {
 			event.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	public void onBlockExplode(BlockExplodeEvent event) {
+		AnimatedExplosion.createExplosion(event.blockList());
+	}
+
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent event) {
+		AnimatedExplosion.createExplosion(event.blockList());
 	}
 
 	@EventHandler
