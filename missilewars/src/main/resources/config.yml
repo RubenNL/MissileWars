@@ -23,3 +23,5 @@ keepinventory: true
 item-cap: 1
 # Resupply timer in seconds (should be > 0)
 resupply-timer: 11
+# animated explosions toggle, causes a lot of lag.
+animated-explosions: true
