@@ -47,7 +47,7 @@ public class MissileCommands {
 				break;
 			default:
 				return false;
-		}rstat
+		}
 		if(location.getZ()>maxDistance && team==GREEN && MissileWars.getMWConfig().preventMissilesInOwnBase()) return false;
 		if(location.getZ()<-maxDistance && team==RED && MissileWars.getMWConfig().preventMissilesInOwnBase()) return false;
 		Location rel = new Location(
