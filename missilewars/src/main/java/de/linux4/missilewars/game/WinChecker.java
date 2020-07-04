@@ -115,7 +115,7 @@ public class WinChecker implements Runnable {
 				|| red1.getBlock().getType() != Material.NETHER_PORTAL) {
 			game.gameStopped = true;
 			greenWin = true;
-			MissileWars.getMissileCommands().greenWin();
+			MissileWars.getMissileCommands().spawnObject(PlayerTeam.GREEN,"win",game.getWorld());
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				p.sendMessage(MissileWars.PREFIX + "§aTeam green has won the game!");
 				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {
@@ -129,7 +129,7 @@ public class WinChecker implements Runnable {
 				|| green1.getBlock().getType() != Material.NETHER_PORTAL) {
 			game.gameStopped = true;
 			redWin = true;
-			MissileWars.getMissileCommands().redWin();
+			MissileWars.getMissileCommands().spawnObject(PlayerTeam.RED,"win",game.getWorld());
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				p.sendMessage(MissileWars.PREFIX + "§cTeam red has won the game!");
 				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {

@@ -18,82 +18,57 @@ package de.linux4.missilewars.game;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 
 import de.linux4.missilewars.MissileWars;
 
+import java.util.*;
+
 public class MissileCommands {
 
 	private CommandSender console = Bukkit.getConsoleSender();
 
-	public void greenTomahawk(Location l) {
-		relativePaste("green_tomahawk", l, 0, -3, -4);
+	public static void spawnObject(Game.PlayerTeam team,String objectName, Location location) {
+		List position=positions.get(objectName);
+		String teamName;
+		switch (team) {
+			case GREEN:
+				position.set(2,-(Integer) position.get(2));
+				teamName="green";
+				break;
+			case RED:
+				teamName="red";
+				break;
+			default:
+				return;
+		}
+		Location rel = new Location(
+				location.getWorld(),
+				location.getX() + (Integer) position.get(0),
+				location.getY() + (Integer) position.get(1),
+				location.getZ() + (Integer) position.get(2)
+		);
+		MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
 	}
-
-	public void redTomahawk(Location l) {
-		relativePaste("red_tomahawk", l, 0, -3, 4);
+	public static void spawnObject(Game.PlayerTeam team, String objectName, World world) {
+		spawnObject(team,objectName,new Location(world,0,0,0));
 	}
-
-	public void greenShieldBuster(Location l) {
-		relativePaste("green_shieldbuster", l, 0, -3, -4);
-	}
-
-	public void redShieldBuster(Location l) {
-		relativePaste("red_shieldbuster", l, 0, -3, 4);
-	}
-
-	public void greenJuggernaut(Location l) {
-		relativePaste("green_juggernaut", l, 0, -3, -4);
-	}
-
-	public void redJuggernaut(Location l) {
-		relativePaste("red_juggernaut", l, 0, -3, 4);
-	}
-
-	public void greenLightning(Location l) {
-		relativePaste("green_lightning", l, 0, -3, -5);
-	}
-
-	public void redLightning(Location l) {
-		relativePaste("red_lightning", l, 0, -3, 5);
-	}
-
-	public void greenGuardian(Location l) {
-		relativePaste("green_guardian", l, 0, -3, -4);
-	}
-
-	public void redGuardian(Location l) {
-		relativePaste("red_guardian", l, 0, -3, 4);
-	}
-
-	public void redShield(Snowball snowball) {
-		MissileWars.getWorldEditUtil().pasteSchematic("red_shield", snowball.getLocation(), true);
-	}
-
-	public void greenShield(Snowball snowball) {
-		MissileWars.getWorldEditUtil().pasteSchematic("green_shield", snowball.getLocation(), true);
-	}
-
-	public void redWin() {
-		MissileWars.getWorldEditUtil().pasteSchematic("red_win",
-				new Location(MissileWars.getWorldManager().getActiveWorld(), -27, 88, -51), true);
-	}
-
-	public void greenWin() {
-		MissileWars.getWorldEditUtil().pasteSchematic("green_win",
-				new Location(MissileWars.getWorldManager().getActiveWorld(), -27, 88, 51), true);
+	public static Map<String, List<Integer>> positions=new HashMap<>();
+	static {
+		positions.put("tomahawk", Arrays.asList(0,-3,4));
+		positions.put("shieldbuster", Arrays.asList(0,-3,4));
+		positions.put("juggernaut", Arrays.asList(0,-3,4));
+		positions.put("lightning", Arrays.asList(0,-3,5));
+		positions.put("guardian", Arrays.asList(0,-3,4));
+		positions.put("shield",Arrays.asList(0,0,0));
+		positions.put("win",Arrays.asList(-27,88,-51));
 	}
 
 	protected void command(String cmd) {
 		Bukkit.dispatchCommand(console, cmd);
-	}
-
-	protected void relativePaste(String name, Location l, double relX, double relY, double relZ) {
-		Location rel = new Location(l.getWorld(), l.getX() + relX, l.getY() + relY,
-				l.getZ() + relZ);
-		MissileWars.getWorldEditUtil().pasteSchematic(name, rel, true);
 	}
 
 }

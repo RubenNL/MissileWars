@@ -37,7 +37,7 @@ public class SpawnItems {
 		this.plugin = plugin;
 	}
 	
-	private void removeFromInv(Player player) {
+	public static void removeFromInv(Player player) {
 		if (player.getGameMode() != GameMode.CREATIVE) {
 			final ItemStack item = player.getInventory().getItemInMainHand();
 			final int a = item.getAmount();
@@ -68,89 +68,8 @@ public class SpawnItems {
 		shield.setCustomNameVisible(false);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				if (shield != null) {
-					switch (game.getPlayerTeam(player)) {
-					case GREEN:
-						MissileWars.getMissileCommands().greenShield(shield);
-						break;
-					case RED:
-						MissileWars.getMissileCommands().redShield(shield);
-						break;
-					default:
-						break;
-					}
-				}
+				if (shield != null) MissileCommands.spawnObject(game.getPlayerTeam(player),"shield",shield.getLocation());
 			}
 		}, 20L);
-	}
-
-	public void spawnLightning(Player p,Location l) {
-		switch (game.getPlayerTeam(p)) {
-		case GREEN:
-			MissileWars.getMissileCommands().greenLightning(l);
-			break;
-		case RED:
-			MissileWars.getMissileCommands().redLightning(l);
-			break;
-		default:
-			break;
-		}
-		removeFromInv(p);
-	}
-
-	public void spawnTomahawk(Player p, Location l) {
-		switch (game.getPlayerTeam(p)) {
-		case GREEN:
-			MissileWars.getMissileCommands().greenTomahawk(l);
-			break;
-		case RED:
-			MissileWars.getMissileCommands().redTomahawk(l);
-			break;
-		default:
-			break;
-		}
-		removeFromInv(p);
-	}
-
-	public void spawnGuardian(Player p,Location l) {
-		switch (game.getPlayerTeam(p)) {
-		case GREEN:
-			MissileWars.getMissileCommands().greenGuardian(l);
-			break;
-		case RED:
-			MissileWars.getMissileCommands().redGuardian(l);
-			break;
-		default:
-			break;
-		}
-		removeFromInv(p);
-	}
-
-	public void spawnJuggernaut(Player p,Location l) {
-		switch (game.getPlayerTeam(p)) {
-		case GREEN:
-			MissileWars.getMissileCommands().greenJuggernaut(l);
-			break;
-		case RED:
-			MissileWars.getMissileCommands().redJuggernaut(l);
-			break;
-		default:
-			break;
-		}
-		removeFromInv(p);
-	}
-
-	public void spawnShieldBuster(Player p,Location l) {
-		switch (game.getPlayerTeam(p)) {
-		case GREEN:
-			MissileWars.getMissileCommands().greenShieldBuster(l);
-			break;
-		case RED:
-			MissileWars.getMissileCommands().redShieldBuster(l);
-			break;
-		default:
-			break;
-		}
-		removeFromInv(p);
 	}
 }
