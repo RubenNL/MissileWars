@@ -162,8 +162,8 @@ public class Game {
 		bowMeta.setUnbreakable(true);
 		bow.setItemMeta(bowMeta);
 		bow.addUnsafeEnchantment(Enchantment.ARROW_FIRE, 1);
-		bow.addUnsafeEnchantment(Enchantment.ARROW_DAMAGE, 1);
-		bow.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 5);
+		bow.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 4);
+		bow.addUnsafeEnchantment(Enchantment.DURABILITY, 10);
 		// items
 		fireball = new ItemStack(Material.FIRE_CHARGE, 1);
 		ItemMeta fireballMeta = fireball.getItemMeta();
