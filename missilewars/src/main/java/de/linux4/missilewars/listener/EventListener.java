@@ -276,11 +276,6 @@ public class EventListener implements Listener {
 			final Player p = (Player) event.getEntity();
 			if (game.getPlayerTeam(p) == PlayerTeam.SPEC && p.getGameMode() != GameMode.CREATIVE) {
 				event.setCancelled(true);
-			} else if (event.getItem().getItemStack().getType() == Material.ARROW) {
-				event.getItem().setCustomName("§eArrow");
-				ItemMeta meta = event.getItem().getItemStack().getItemMeta();
-				meta.setDisplayName("§eArrow");
-				event.getItem().getItemStack().setItemMeta(meta);
 			}
 		} else {
 			event.setCancelled(true);

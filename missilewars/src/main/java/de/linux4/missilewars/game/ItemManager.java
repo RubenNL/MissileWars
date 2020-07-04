@@ -36,9 +36,6 @@ public class ItemManager implements Runnable {
 	public ItemManager(Game game) {
 		this.game = game;
 		ItemStack arrow = new ItemStack(Material.ARROW, 3);
-		ItemMeta arrowMeta = arrow.getItemMeta();
-		arrowMeta.setDisplayName("§eArrow");
-		arrow.setItemMeta(arrowMeta);
 		items = new ItemStack[] { arrow, game.fireball, game.tomahawk, game.juggernaut, game.shieldBuster,
 				game.guardian, game.lightning, game.shield };
 	}
