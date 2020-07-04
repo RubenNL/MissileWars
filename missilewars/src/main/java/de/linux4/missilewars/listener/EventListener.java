@@ -244,9 +244,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		if (event.getSlotType() == SlotType.ARMOR) {
-			event.setCancelled(true);
-		}
+		event.setCancelled(true);
 	}
 
 	@EventHandler
