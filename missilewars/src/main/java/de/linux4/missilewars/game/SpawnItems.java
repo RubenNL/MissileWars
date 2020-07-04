@@ -68,18 +68,7 @@ public class SpawnItems {
 		shield.setCustomNameVisible(false);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
-				if (shield != null) {
-					switch (game.getPlayerTeam(player)) {
-					case GREEN:
-						MissileWars.getMissileCommands().greenShield(shield);
-						break;
-					case RED:
-						MissileWars.getMissileCommands().redShield(shield);
-						break;
-					default:
-						break;
-					}
-				}
+				if (shield != null) MissileCommands.spawnObject(game.getPlayerTeam(player),"shield",shield.getLocation());
 			}
 		}, 20L);
 	}

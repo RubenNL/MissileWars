@@ -117,7 +117,7 @@ public class EventListener implements Listener {
 				}
 				String strippedName=name.toLowerCase().substring(2);
 				if(MissileCommands.positions.containsKey(strippedName)) {
-					MissileCommands.spawnMissile(game.getPlayerTeam(p),strippedName,l);
+					MissileCommands.spawnObject(game.getPlayerTeam(p),strippedName,l);
 					SpawnItems.removeFromInv(p);
 					event.setCancelled(true);
 				}
