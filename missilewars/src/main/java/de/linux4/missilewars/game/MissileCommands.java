@@ -35,7 +35,7 @@ public class MissileCommands {
 	private CommandSender console = Bukkit.getConsoleSender();
 
 	public static boolean spawnObject(Game.PlayerTeam team,String objectName, Location location,int maxDistance) {
-		List position=positions.get(objectName);
+		List<Integer> position = new ArrayList<Integer>(positions.get(objectName));
 		String teamName;
 		switch (team) {
 			case GREEN:
@@ -47,7 +47,7 @@ public class MissileCommands {
 				break;
 			default:
 				return false;
-		}
+		}rstat
 		if(location.getZ()>maxDistance && team==GREEN && MissileWars.getMWConfig().preventMissilesInOwnBase()) return false;
 		if(location.getZ()<-maxDistance && team==RED && MissileWars.getMWConfig().preventMissilesInOwnBase()) return false;
 		Location rel = new Location(
