@@ -142,6 +142,7 @@ public class WinChecker implements Runnable {
 	}
 
 	public void firework(FireworkEffect effect) {
+		if(!MissileWars.getMWConfig().fireworks()) return;
 		int rand = random.nextInt(-72, 20 + 1);
 		int rand1 = random.nextInt(-66, 66 + 1);
 		Location loc = fireworkLoc.clone();
