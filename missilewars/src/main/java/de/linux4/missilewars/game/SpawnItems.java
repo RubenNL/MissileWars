@@ -35,15 +35,8 @@ public class SpawnItems {
 		this.game = game;
 		this.plugin = plugin;
 	}
-
-	public void spawnFireball(Player player) {
-		final Fireball fireball = player.launchProjectile(Fireball.class);
-		fireball.setVelocity(player.getLocation().getDirection().multiply(2));
-		fireball.setBounce(false);
-		fireball.setIsIncendiary(true);
-		fireball.setCustomName("§6Fireball");
-		fireball.setCustomNameVisible(false);
-		fireball.setShooter(player);
+	
+	private void removeFromInv(Player player) {
 		if (player.getGameMode() != GameMode.CREATIVE) {
 			final ItemStack item = player.getInventory().getItemInMainHand();
 			final int a = item.getAmount();
@@ -56,18 +49,20 @@ public class SpawnItems {
 		}
 	}
 
+	public void spawnFireball(Player player) {
+		final Fireball fireball = player.launchProjectile(Fireball.class);
+		fireball.setVelocity(player.getLocation().getDirection().multiply(2));
+		fireball.setBounce(false);
+		fireball.setIsIncendiary(true);
+		fireball.setCustomName("§6Fireball");
+		fireball.setCustomNameVisible(false);
+		fireball.setShooter(player);
+		removeFromInv(player);
+	}
+
 	public void spawnShield(Player player) {
 		final Snowball shield = player.launchProjectile(Snowball.class);
-		if (player.getGameMode() != GameMode.CREATIVE) {
-			final ItemStack item = player.getInventory().getItemInMainHand();
-			final int a = item.getAmount();
-			if (a <= 1) {
-				player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-			} else {
-				item.setAmount(a - 1);
-				player.getInventory().setItemInMainHand(item);
-			}
-		}
+		removeFromInv(player);
 		shield.setCustomName("§1Shield");
 		shield.setCustomNameVisible(false);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -99,16 +94,7 @@ public class SpawnItems {
 		default:
 			break;
 		}
-		if (p.getGameMode() != GameMode.CREATIVE) {
-			final ItemStack item = p.getInventory().getItemInMainHand();
-			final int a = item.getAmount();
-			if (a <= 1) {
-				p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-			} else {
-				item.setAmount(a - 1);
-				p.getInventory().setItemInMainHand(item);
-			}
-		}
+		removeFromInv(p);
 	}
 
 	public void spawnTomahawk(Player p) {
@@ -122,16 +108,7 @@ public class SpawnItems {
 		default:
 			break;
 		}
-		if (p.getGameMode() != GameMode.CREATIVE) {
-			final ItemStack item = p.getInventory().getItemInMainHand();
-			final int a = item.getAmount();
-			if (a <= 1) {
-				p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-			} else {
-				item.setAmount(a - 1);
-				p.getInventory().setItemInMainHand(item);
-			}
-		}
+		removeFromInv(p);
 	}
 
 	public void spawnGuardian(Player p) {
@@ -145,16 +122,7 @@ public class SpawnItems {
 		default:
 			break;
 		}
-		if (p.getGameMode() != GameMode.CREATIVE) {
-			final ItemStack item = p.getInventory().getItemInMainHand();
-			final int a = item.getAmount();
-			if (a <= 1) {
-				p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-			} else {
-				item.setAmount(a - 1);
-				p.getInventory().setItemInMainHand(item);
-			}
-		}
+		removeFromInv(p);
 	}
 
 	public void spawnJuggernaut(Player p) {
@@ -168,16 +136,7 @@ public class SpawnItems {
 		default:
 			break;
 		}
-		if (p.getGameMode() != GameMode.CREATIVE) {
-			final ItemStack item = p.getInventory().getItemInMainHand();
-			final int a = item.getAmount();
-			if (a <= 1) {
-				p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-			} else {
-				item.setAmount(a - 1);
-				p.getInventory().setItemInMainHand(item);
-			}
-		}
+		removeFromInv(p);
 	}
 
 	public void spawnShieldBuster(Player p) {
@@ -191,15 +150,6 @@ public class SpawnItems {
 		default:
 			break;
 		}
-		if (p.getGameMode() != GameMode.CREATIVE) {
-			final ItemStack item = p.getInventory().getItemInMainHand();
-			final int a = item.getAmount();
-			if (a <= 1) {
-				p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-			} else {
-				item.setAmount(a - 1);
-				p.getInventory().setItemInMainHand(item);
-			}
-		}
+		removeFromInv(p);
 	}
 }
