@@ -113,8 +113,7 @@ public class MissileWars extends JavaPlugin {
 			active.setThundering(false);
 			active.setStorm(false);
 		}, 20L, 20L);
-
-		for (Player player : Bukkit.getOnlinePlayers()) {
+		for (Player player : worldManager.getActiveWorld().getPlayers()) {
 			player.setScoreboard(game.getScoreboard());
 			game.returnToLobby(player);
 		}
