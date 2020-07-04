@@ -34,3 +34,6 @@ commands:
        description: Spectate
        aliases: [spec]
        usage: /<command>
+   reset:
+       description: reset
+       usage: /<command>

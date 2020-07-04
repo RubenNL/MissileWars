@@ -197,6 +197,13 @@ public class MissileWars extends JavaPlugin {
 			} else {
 				sender.sendMessage(NO_CONSOLE_CMD);
 			}
+		} else if (cmd.getName().equalsIgnoreCase("reset")) {
+			if (sender.hasPermission("missilewars.reset")) {
+				MissileWars.getPlugin(MissileWars.class).onDisable();
+				MissileWars.getPlugin(MissileWars.class).onEnable();
+			} else {
+				sender.sendMessage(NO_PERMISSION);
+			}
 		}
 		return true;
 	}
