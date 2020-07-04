@@ -27,11 +27,14 @@ import de.linux4.missilewars.MissileWars;
 
 import java.util.*;
 
+import static de.linux4.missilewars.game.Game.PlayerTeam.GREEN;
+import static de.linux4.missilewars.game.Game.PlayerTeam.RED;
+
 public class MissileCommands {
 
 	private CommandSender console = Bukkit.getConsoleSender();
 
-	public static void spawnObject(Game.PlayerTeam team,String objectName, Location location) {
+	public static boolean spawnObject(Game.PlayerTeam team,String objectName, Location location,int maxDistance) {
 		List position=positions.get(objectName);
 		String teamName;
 		switch (team) {
@@ -43,8 +46,10 @@ public class MissileCommands {
 				teamName="red";
 				break;
 			default:
-				return;
+				return false;
 		}
+		if(location.getZ()>maxDistance && team==GREEN && MissileWars.getMWConfig().preventMissilesInOwnBase()) return false;
+		if(location.getZ()<-maxDistance && team==RED && MissileWars.getMWConfig().preventMissilesInOwnBase()) return false;
 		Location rel = new Location(
 				location.getWorld(),
 				location.getX() + (Integer) position.get(0),
@@ -52,9 +57,10 @@ public class MissileCommands {
 				location.getZ() + (Integer) position.get(2)
 		);
 		MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
+		return true;
 	}
-	public static void spawnObject(Game.PlayerTeam team, String objectName, World world) {
-		spawnObject(team,objectName,new Location(world,0,0,0));
+	public static boolean spawnObject(Game.PlayerTeam team, String objectName, World world) {
+		return spawnObject(team,objectName,new Location(world,0,0,0),100);
 	}
 	public static Map<String, List<Integer>> positions=new HashMap<>();
 	static {

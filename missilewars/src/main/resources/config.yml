@@ -24,4 +24,6 @@ item-cap: 1
 # Resupply timer in seconds (should be > 0)
 resupply-timer: 11
 # animated explosions toggle, causes a lot of lag.
-animated-explosions: true
+animated-explosions: false
+# prevents teamgreef, but also blocks spawning missiles when base is getting small. needs fixing.
+prevent-missiles-in-own-base: false

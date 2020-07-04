@@ -28,6 +28,7 @@ public class Config {
 	private int itemCap;
 	private int resupplyTimer;
 	private boolean animatedExplosions;
+	private boolean preventMissilesInOwnBase;
 
 	public Config(File file) {
 		FileConfiguration conf = YamlConfiguration.loadConfiguration(file);
@@ -36,6 +37,7 @@ public class Config {
 		itemCap = conf.getInt("item-cap", 1);
 		resupplyTimer = conf.getInt("resupply-timer", 11);
 		animatedExplosions = conf.getBoolean("animated-explosions",true);
+		preventMissilesInOwnBase = conf.getBoolean("prevent-missiles-in-own-base",false);
 		if (maxPlayers % 2 != 0 || maxPlayers <= 0) {
 			throw new IllegalArgumentException("max-players should be an even number > 0");
 		}
@@ -66,4 +68,6 @@ public class Config {
 	}
 
 	public boolean animatedExplosions() {return animatedExplosions;}
+
+	public boolean preventMissilesInOwnBase() {return preventMissilesInOwnBase;}
 }
