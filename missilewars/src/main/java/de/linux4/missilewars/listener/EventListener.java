@@ -16,6 +16,7 @@
  ******************************************************************************/
 package de.linux4.missilewars.listener;
 
+import de.linux4.missilewars.game.MissileCommands;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -114,20 +115,10 @@ public class EventListener implements Listener {
 						}
 					}
 				}
-				if (lightning.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnLightning(p,l);
-					event.setCancelled(true);
-				} else if (tomahawk.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnTomahawk(p,l);
-					event.setCancelled(true);
-				} else if (guardian.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnGuardian(p,l);
-					event.setCancelled(true);
-				} else if (juggernaut.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnJuggernaut(p,l);
-					event.setCancelled(true);
-				} else if (shieldBuster.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnShieldBuster(p,l);
+				String strippedName=name.toLowerCase().substring(2);
+				if(MissileCommands.positions.containsKey(strippedName)) {
+					MissileCommands.spawnMissile(game.getPlayerTeam(p),strippedName,l);
+					SpawnItems.removeFromInv(p);
 					event.setCancelled(true);
 				}
 			}
