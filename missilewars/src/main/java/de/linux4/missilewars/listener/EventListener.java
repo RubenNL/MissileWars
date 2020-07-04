@@ -118,9 +118,8 @@ public class EventListener implements Listener {
 				}
 				String strippedName=name.toLowerCase().substring(2);
 				if(MissileCommands.positions.containsKey(strippedName)) {
-					MissileCommands.spawnObject(game.getPlayerTeam(p),strippedName,l);
-					SpawnItems.removeFromInv(p);
 					event.setCancelled(true);
+					if(MissileCommands.spawnObject(game.getPlayerTeam(p),strippedName,l,55)) SpawnItems.removeFromInv(p);
 				}
 			}
 			if (fireball.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
