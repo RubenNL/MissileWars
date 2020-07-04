@@ -120,6 +120,7 @@ public class EventListener implements Listener {
 				if(MissileCommands.positions.containsKey(strippedName)) {
 					event.setCancelled(true);
 					if(MissileCommands.spawnObject(game.getPlayerTeam(p),strippedName,l,55)) SpawnItems.removeFromInv(p);
+					else p.sendMessage("invalid location!");
 				}
 			}
 			if (fireball.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
