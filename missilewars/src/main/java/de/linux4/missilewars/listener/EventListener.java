@@ -272,6 +272,16 @@ public class EventListener implements Listener {
 	}
 
 	@EventHandler
+	public void onBlockExplode(BlockExplodeEvent event) {
+		AnimatedExplosion.createExplosion(event.blockList());
+	}
+
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent event) {
+		AnimatedExplosion.createExplosion(event.blockList());
+	}
+
+	@EventHandler
 	public void onBlockPhysics(BlockPhysicsEvent event) {
 		if (!game.gameStarted) {
 			event.setCancelled(true);
