@@ -28,44 +28,44 @@ public class MissileCommands {
 
 	private CommandSender console = Bukkit.getConsoleSender();
 
-	public void greenTomahawk(Player p) {
-		relativePaste("green_tomahawk", p, 0, -3, -4);
+	public void greenTomahawk(Location l) {
+		relativePaste("green_tomahawk", l, 0, -3, -4);
 	}
 
-	public void redTomahawk(Player p) {
-		relativePaste("red_tomahawk", p, 0, -3, 4);
+	public void redTomahawk(Location l) {
+		relativePaste("red_tomahawk", l, 0, -3, 4);
 	}
 
-	public void greenShieldBuster(Player p) {
-		relativePaste("green_shieldbuster", p, 0, -3, -4);
+	public void greenShieldBuster(Location l) {
+		relativePaste("green_shieldbuster", l, 0, -3, -4);
 	}
 
-	public void redShieldBuster(Player p) {
-		relativePaste("red_shieldbuster", p, 0, -3, 4);
+	public void redShieldBuster(Location l) {
+		relativePaste("red_shieldbuster", l, 0, -3, 4);
 	}
 
-	public void greenJuggernaut(Player p) {
-		relativePaste("green_juggernaut", p, 0, -3, -4);
+	public void greenJuggernaut(Location l) {
+		relativePaste("green_juggernaut", l, 0, -3, -4);
 	}
 
-	public void redJuggernaut(Player p) {
-		relativePaste("red_juggernaut", p, 0, -3, 4);
+	public void redJuggernaut(Location l) {
+		relativePaste("red_juggernaut", l, 0, -3, 4);
 	}
 
-	public void greenLightning(Player p) {
-		relativePaste("green_lightning", p, 0, -3, -5);
+	public void greenLightning(Location l) {
+		relativePaste("green_lightning", l, 0, -3, -5);
 	}
 
-	public void redLightning(Player p) {
-		relativePaste("red_lightning", p, 0, -3, 5);
+	public void redLightning(Location l) {
+		relativePaste("red_lightning", l, 0, -3, 5);
 	}
 
-	public void greenGuardian(Player p) {
-		relativePaste("green_guardian", p, 0, -3, -4);
+	public void greenGuardian(Location l) {
+		relativePaste("green_guardian", l, 0, -3, -4);
 	}
 
-	public void redGuardian(Player p) {
-		relativePaste("red_guardian", p, 0, -3, 4);
+	public void redGuardian(Location l) {
+		relativePaste("red_guardian", l, 0, -3, 4);
 	}
 
 	public void redShield(Snowball snowball) {
@@ -90,9 +90,9 @@ public class MissileCommands {
 		Bukkit.dispatchCommand(console, cmd);
 	}
 
-	protected void relativePaste(String name, Player p, double relX, double relY, double relZ) {
-		Location rel = new Location(p.getWorld(), p.getLocation().getX() + relX, p.getLocation().getY() + relY,
-				p.getLocation().getZ() + relZ);
+	protected void relativePaste(String name, Location l, double relX, double relY, double relZ) {
+		Location rel = new Location(l.getWorld(), l.getX() + relX, l.getY() + relY,
+				l.getZ() + relZ);
 		MissileWars.getWorldEditUtil().pasteSchematic(name, rel, true);
 	}
 
