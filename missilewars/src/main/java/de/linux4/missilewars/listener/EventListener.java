@@ -16,10 +16,7 @@
  ******************************************************************************/
 package de.linux4.missilewars.listener;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -99,6 +96,7 @@ public class EventListener implements Listener {
 			String name = item != null && item.getItemMeta() != null ? item.getItemMeta().getDisplayName() : "";
 			if (action != Action.RIGHT_CLICK_AIR) {
 				final Block clicked = event.getClickedBlock();
+				final Location l = clicked.getLocation();
 				if (clicked.getState() != null && clicked.getState() instanceof Sign) {
 					final Sign sign = (Sign) clicked.getState();
 					final String[] lines = sign.getLines();
@@ -117,19 +115,19 @@ public class EventListener implements Listener {
 					}
 				}
 				if (lightning.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnLightning(p);
+					spawnItems.spawnLightning(p,l);
 					event.setCancelled(true);
 				} else if (tomahawk.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnTomahawk(p);
+					spawnItems.spawnTomahawk(p,l);
 					event.setCancelled(true);
 				} else if (guardian.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnGuardian(p);
+					spawnItems.spawnGuardian(p,l);
 					event.setCancelled(true);
 				} else if (juggernaut.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnJuggernaut(p);
+					spawnItems.spawnJuggernaut(p,l);
 					event.setCancelled(true);
 				} else if (shieldBuster.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-					spawnItems.spawnShieldBuster(p);
+					spawnItems.spawnShieldBuster(p,l);
 					event.setCancelled(true);
 				}
 			}

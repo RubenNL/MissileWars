@@ -18,6 +18,7 @@ package de.linux4.missilewars.game;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -83,13 +84,13 @@ public class SpawnItems {
 		}, 20L);
 	}
 
-	public void spawnLightning(Player p) {
+	public void spawnLightning(Player p,Location l) {
 		switch (game.getPlayerTeam(p)) {
 		case GREEN:
-			MissileWars.getMissileCommands().greenLightning(p);
+			MissileWars.getMissileCommands().greenLightning(l);
 			break;
 		case RED:
-			MissileWars.getMissileCommands().redLightning(p);
+			MissileWars.getMissileCommands().redLightning(l);
 			break;
 		default:
 			break;
@@ -97,13 +98,13 @@ public class SpawnItems {
 		removeFromInv(p);
 	}
 
-	public void spawnTomahawk(Player p) {
+	public void spawnTomahawk(Player p, Location l) {
 		switch (game.getPlayerTeam(p)) {
 		case GREEN:
-			MissileWars.getMissileCommands().greenTomahawk(p);
+			MissileWars.getMissileCommands().greenTomahawk(l);
 			break;
 		case RED:
-			MissileWars.getMissileCommands().redTomahawk(p);
+			MissileWars.getMissileCommands().redTomahawk(l);
 			break;
 		default:
 			break;
@@ -111,13 +112,13 @@ public class SpawnItems {
 		removeFromInv(p);
 	}
 
-	public void spawnGuardian(Player p) {
+	public void spawnGuardian(Player p,Location l) {
 		switch (game.getPlayerTeam(p)) {
 		case GREEN:
-			MissileWars.getMissileCommands().greenGuardian(p);
+			MissileWars.getMissileCommands().greenGuardian(l);
 			break;
 		case RED:
-			MissileWars.getMissileCommands().redGuardian(p);
+			MissileWars.getMissileCommands().redGuardian(l);
 			break;
 		default:
 			break;
@@ -125,13 +126,13 @@ public class SpawnItems {
 		removeFromInv(p);
 	}
 
-	public void spawnJuggernaut(Player p) {
+	public void spawnJuggernaut(Player p,Location l) {
 		switch (game.getPlayerTeam(p)) {
 		case GREEN:
-			MissileWars.getMissileCommands().greenJuggernaut(p);
+			MissileWars.getMissileCommands().greenJuggernaut(l);
 			break;
 		case RED:
-			MissileWars.getMissileCommands().redJuggernaut(p);
+			MissileWars.getMissileCommands().redJuggernaut(l);
 			break;
 		default:
 			break;
@@ -139,13 +140,13 @@ public class SpawnItems {
 		removeFromInv(p);
 	}
 
-	public void spawnShieldBuster(Player p) {
+	public void spawnShieldBuster(Player p,Location l) {
 		switch (game.getPlayerTeam(p)) {
 		case GREEN:
-			MissileWars.getMissileCommands().greenShieldBuster(p);
+			MissileWars.getMissileCommands().greenShieldBuster(l);
 			break;
 		case RED:
-			MissileWars.getMissileCommands().redShieldBuster(p);
+			MissileWars.getMissileCommands().redShieldBuster(l);
 			break;
 		default:
 			break;
