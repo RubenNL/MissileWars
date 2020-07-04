@@ -249,10 +249,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
-		if (game.getPlayerTeam(event.getPlayer()) == PlayerTeam.SPEC
-				|| Material.BOW == event.getItemDrop().getItemStack().getType()) {
-			event.setCancelled(true);
-		}
+		event.setCancelled(true);
 	}
 
 	@EventHandler
