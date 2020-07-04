@@ -48,7 +48,7 @@ public class GameManager implements Runnable {
 
 	@Override
 	public void run() {
-		if (game.greenTeam.size() >= 1 && game.redTeam.size() >= 1 && !game.gameStarting) {
+		if ((game.greenTeam.size() >= 1 || game.redTeam.size() >= 1) && !game.gameStarting) {
 			game.setGameStarting(true);
 			countdown = new Countdown(this);
 			countdownTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, countdown, 0L, 20L);
