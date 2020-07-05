@@ -43,7 +43,7 @@ public class WinChecker implements Runnable {
 	private boolean redWin = false;
 	private boolean greenWin = false;
 	private static final ThreadLocalRandom random = ThreadLocalRandom.current();
-	private double countdown = 30;
+	private double countdown = MissileWars.getMWConfig().getEndCountdown();
 	private boolean taskScheduled = false;
 	private static final String prefix = MissileWars.PREFIX;
 	private int taskid = 0;

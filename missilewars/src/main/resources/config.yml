@@ -29,3 +29,7 @@ animated-explosions: false
 prevent-missiles-in-own-base: false
 # enable fireworks on win. causes a bit of lag.
 fireworks: false
+# time before game start, after first player joins
+beginCountdown: 60
+# time before game resets, after first portal is destroyed.
+endCountdown: 30

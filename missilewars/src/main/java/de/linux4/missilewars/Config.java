@@ -30,6 +30,8 @@ public class Config {
 	private boolean animatedExplosions;
 	private boolean preventMissilesInOwnBase;
 	private boolean fireworks;
+	private int beginCountdown;
+	private int endCountdown;
 
 	public Config(File file) {
 		FileConfiguration conf = YamlConfiguration.loadConfiguration(file);
@@ -40,6 +42,8 @@ public class Config {
 		animatedExplosions = conf.getBoolean("animated-explosions",true);
 		preventMissilesInOwnBase = conf.getBoolean("prevent-missiles-in-own-base",false);
 		fireworks = conf.getBoolean("fireworks",true);
+		beginCountdown = conf.getInt("beginCountdown", 60);
+		endCountdown = conf.getInt("endCountdown", 30);
 		if (maxPlayers % 2 != 0 || maxPlayers <= 0) {
 			throw new IllegalArgumentException("max-players should be an even number > 0");
 		}
@@ -74,4 +78,11 @@ public class Config {
 	public boolean preventMissilesInOwnBase() {return preventMissilesInOwnBase;}
 
 	public boolean fireworks() {return fireworks;}
+
+	public int getBeginCountdown() {
+		return beginCountdown;
+	}
+	public int getEndCountdown() {
+		return endCountdown;
+	}
 }
