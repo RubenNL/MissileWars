@@ -55,17 +55,9 @@ public class GameManager implements Runnable {
 		} else if (game.gameStarting && countdownFinished && !game.gameStarted) {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				if (game.getPlayerTeam(player) == PlayerTeam.GREEN) {
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							game.greenTeleport(player);
-						}
-					}, 0L);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> game.greenTeleport(player), 0L);
 				} else if (game.getPlayerTeam(player) == PlayerTeam.RED) {
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-						public void run() {
-							game.redTeleport(player);
-						}
-					}, 0L);
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> game.redTeleport(player), 0L);
 				}
 			}
 			itemManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new ItemManager(game), 0L,

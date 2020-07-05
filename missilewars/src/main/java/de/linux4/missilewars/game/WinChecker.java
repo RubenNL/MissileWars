@@ -72,36 +72,32 @@ public class WinChecker implements Runnable {
 		if (!taskScheduled && (redWin || greenWin)) {
 			taskScheduled = true;
 			taskid = Bukkit.getScheduler().scheduleSyncRepeatingTask(MissileWars.getPlugin(MissileWars.class),
-					new Runnable() {
-						@Override
-						public void run() {
-							for (Player p : Bukkit.getOnlinePlayers()) {
-								if (countdown > 1) {
-									if (countdown == 30 || countdown == 15 || countdown == 10 || countdown == 5
-											|| countdown == 4 || countdown == 3 || countdown == 2) {
-										p.sendMessage(prefix + "§cRestarting in §6" + (int) countdown + " §cseconds!");
-									}
-								} else if (countdown == 1) {
-									p.sendMessage(prefix + "§cRestarting in §6" + (int) countdown + " §csecond!");
+					() -> {
+						for (Player p : Bukkit.getOnlinePlayers()) {
+							if (countdown > 1) {
+								if (countdown == 30 || countdown == 15 || countdown == 10 || countdown == 5
+										|| countdown == 4 || countdown == 3 || countdown == 2) {
+									p.sendMessage(prefix + "§cRestarting in §6" + (int) countdown + " §cseconds!");
 								}
+							} else if (countdown == 1) {
+								p.sendMessage(prefix + "§cRestarting in §6" + (int) countdown + " §csecond!");
 							}
-							if (countdown == 0) {
-								Bukkit.broadcastMessage(prefix + "§cRestarting!");
-								game = null;
-								red0 = null;
-								red1 = null;
-								green0 = null;
-								green1 = null;
-								fireworkLoc = null;
-								MissileWars.getPlugin(MissileWars.class).onDisable();
-								MissileWars.getPlugin(MissileWars.class).onEnable();
-								Bukkit.getScheduler().cancelTask(taskid);
-								// System.exit(0);
-								return;
-							}
-							countdown--;
 						}
-
+						if (countdown == 0) {
+							Bukkit.broadcastMessage(prefix + "§cRestarting!");
+							game = null;
+							red0 = null;
+							red1 = null;
+							green0 = null;
+							green1 = null;
+							fireworkLoc = null;
+							MissileWars.getPlugin(MissileWars.class).onDisable();
+							MissileWars.getPlugin(MissileWars.class).onEnable();
+							Bukkit.getScheduler().cancelTask(taskid);
+							// System.exit(0);
+							return;
+						}
+						countdown--;
 					}, 20L, 20L);
 		}
 		if (redWin) {
@@ -115,7 +111,7 @@ public class WinChecker implements Runnable {
 				|| red1.getBlock().getType() != Material.NETHER_PORTAL) {
 			game.gameStopped = true;
 			greenWin = true;
-			MissileWars.getMissileCommands().spawnObject(PlayerTeam.GREEN,"win",game.getWorld());
+			MissileCommands.spawnObject(PlayerTeam.GREEN,"win",game.getWorld());
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				p.sendMessage(MissileWars.PREFIX + "§aTeam green has won the game!");
 				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {
@@ -129,7 +125,7 @@ public class WinChecker implements Runnable {
 				|| green1.getBlock().getType() != Material.NETHER_PORTAL) {
 			game.gameStopped = true;
 			redWin = true;
-			MissileWars.getMissileCommands().spawnObject(PlayerTeam.RED,"win",game.getWorld());
+			MissileCommands.spawnObject(PlayerTeam.RED,"win",game.getWorld());
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				p.sendMessage(MissileWars.PREFIX + "§cTeam red has won the game!");
 				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {
@@ -137,7 +133,6 @@ public class WinChecker implements Runnable {
 				}
 			}
 			firework(redFirework);
-			return;
 		}
 	}
 

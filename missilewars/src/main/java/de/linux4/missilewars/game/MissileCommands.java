@@ -20,8 +20,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
 
 import de.linux4.missilewars.MissileWars;
 
@@ -35,11 +33,11 @@ public class MissileCommands {
 	private CommandSender console = Bukkit.getConsoleSender();
 
 	public static boolean spawnObject(Game.PlayerTeam team,String objectName, Location location,int maxDistance) {
-		List<Integer> position = new ArrayList<Integer>(positions.get(objectName));
+		List<Integer> position = new ArrayList<>(positions.get(objectName));
 		String teamName;
 		switch (team) {
 			case GREEN:
-				position.set(2,-(Integer) position.get(2));
+				position.set(2,-position.get(2));
 				teamName="green";
 				break;
 			case RED:
@@ -52,9 +50,9 @@ public class MissileCommands {
 		if(location.getZ()<-maxDistance && team==RED && MissileWars.getMWConfig().preventMissilesInOwnBase()) return false;
 		Location rel = new Location(
 				location.getWorld(),
-				location.getX() + (Integer) position.get(0),
-				location.getY() + (Integer) position.get(1),
-				location.getZ() + (Integer) position.get(2)
+				location.getX() + position.get(0),
+				location.getY() + position.get(1),
+				location.getZ() + position.get(2)
 		);
 		MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
 		return true;
@@ -72,9 +70,4 @@ public class MissileCommands {
 		positions.put("shield",Arrays.asList(0,0,0));
 		positions.put("win",Arrays.asList(-27,88,-51));
 	}
-
-	protected void command(String cmd) {
-		Bukkit.dispatchCommand(console, cmd);
-	}
-
 }

@@ -42,10 +42,10 @@ import de.linux4.missilewars.MissileWars;
 
 public class Game {
 
-	public Collection<Location> greenJoin = new HashSet<Location>();
-	public Collection<Location> redJoin = new HashSet<Location>();
-	public Collection<Player> greenTeam = new HashSet<Player>();
-	public Collection<Player> redTeam = new HashSet<Player>();
+	public Collection<Location> greenJoin = new HashSet<>();
+	public Collection<Location> redJoin = new HashSet<>();
+	public Collection<Player> greenTeam = new HashSet<>();
+	public Collection<Player> redTeam = new HashSet<>();
 	private static final String prefix = MissileWars.PREFIX;
 	public boolean gameStarted = false;
 	public boolean gameStarting = false;
@@ -410,6 +410,6 @@ public class Game {
 	}
 
 	public enum PlayerTeam {
-		RED, GREEN, SPEC, NONE;
+		RED, GREEN, SPEC, NONE
 	}
 }

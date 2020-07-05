@@ -203,10 +203,6 @@ public class MissileWars extends JavaPlugin {
 		return true;
 	}
 
-	public static MissileCommands getMissileCommands() {
-		return commands;
-	}
-
 	public static WorldEditUtil getWorldEditUtil() {
 		return worldedit;
 	}

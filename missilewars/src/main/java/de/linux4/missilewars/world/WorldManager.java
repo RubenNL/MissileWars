@@ -59,7 +59,7 @@ public class WorldManager {
 					ZipEntry entry = entries.nextElement();
 					if (entry.getName().startsWith(mapname + "/")) {
 						File file = new File(mapFolder,
-								entry.getName().substring((mapname + "/").length(), entry.getName().length()));
+								entry.getName().substring((mapname + "/").length()));
 						if (entry.isDirectory()) {
 							file.mkdirs();
 						} else {

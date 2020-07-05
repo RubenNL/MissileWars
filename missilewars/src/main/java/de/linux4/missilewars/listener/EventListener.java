@@ -17,12 +17,10 @@
 package de.linux4.missilewars.listener;
 
 import de.linux4.missilewars.game.MissileCommands;
-import de.linux4.missilewars.world.WorldManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
