@@ -193,16 +193,14 @@ public class MissileWars extends JavaPlugin {
 			}
 		} else if (cmd.getName().equalsIgnoreCase("reset")) {
 			if (sender.hasPermission("missilewars.reset")) {
-				List<Player> players=worldManager.getActiveWorld().getPlayers();
+				List<Player> players=game.getWorld().getPlayers();
 				for(Player player:players) {
 					player.getInventory().clear();
 					player.teleport(Bukkit.getWorld("lobby").getSpawnLocation());
 				}
 				worldManager.reset();
 				reset();
-				for(Player player:players) {
-					player.teleport(worldManager.getActiveWorld().getSpawnLocation());
-				}
+				for(Player player:players) game.returnToLobby(player);
 			} else {
 				sender.sendMessage(NO_PERMISSION);
 			}
