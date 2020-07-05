@@ -145,7 +145,7 @@ public class MissileWars extends JavaPlugin {
 		if (cmd.getName().equalsIgnoreCase("start")) {
 			if (sender.hasPermission("missilewars.start")) {
 				if (game.gameStarting) {
-					if (!game.gameStarted && gameManager.countdown.time > 5) {
+					if (!game.gameStarted && gameManager.countdown.time > 1) {
 						gameManager.startGame();
 					}
 				} else {
