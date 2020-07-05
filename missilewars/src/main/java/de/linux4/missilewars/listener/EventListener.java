@@ -115,12 +115,14 @@ public class EventListener implements Listener {
 						}
 					}
 				}
-				String strippedName = name.toLowerCase().substring(2);
-				if (MissileCommands.positions.containsKey(strippedName)) {
-					event.setCancelled(true);
-					if (MissileCommands.spawnObject(game.getPlayerTeam(p), strippedName, l, 55))
-						SpawnItems.removeFromInv(p);
-					else p.sendMessage("invalid location!");
+				if(name.length()>2) {
+					String strippedName = name.toLowerCase().substring(2);
+					if (MissileCommands.positions.containsKey(strippedName)) {
+						event.setCancelled(true);
+						if (MissileCommands.spawnObject(game.getPlayerTeam(p), strippedName, l, 55))
+							SpawnItems.removeFromInv(p);
+						else p.sendMessage("invalid location!");
+					}
 				}
 			}
 			if (fireball.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
