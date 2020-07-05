@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -56,6 +57,14 @@ public class MissileWars extends JavaPlugin {
 	private static WorldManager worldManager;
 	private static Config config;
 
+	private void reset() {
+		onDisable();
+		game = new Game(worldManager.getWorld());
+		gameManager = new GameManager(game, this);
+		joinTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new JoinChecker(game), 0L, 5L);
+		gameManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameManager, 0L, 5L);
+		Bukkit.getPluginManager().registerEvents(new EventListener(game), this);
+	}
 	@Override
 	public void onEnable() {
 		plugin = this;
@@ -91,36 +100,11 @@ public class MissileWars extends JavaPlugin {
 			e.printStackTrace();
 		}
 
-		World active;
-		if (worldManager == null) {
-			worldManager = new WorldManager();
-			active = worldManager.getActiveWorld();
-		} else {
-			active = worldManager.getInactiveWorld();
-		}
+		if (worldManager == null) worldManager = new WorldManager();
 
 		worldedit = new WorldEditUtil(schematics);
 		commands = new MissileCommands();
-
-		game = new Game(active);
-		gameManager = new GameManager(game, this);
-		joinTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new JoinChecker(game), 0L, 5L);
-		gameManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameManager, 0L, 5L);
-		Bukkit.getPluginManager().registerEvents(new EventListener(game), this);
-
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-			active.setTime(1000);
-			active.setThundering(false);
-			active.setStorm(false);
-		}, 20L, 20L);
-		for (Player player : worldManager.getActiveWorld().getPlayers()) {
-			player.setScoreboard(game.getScoreboard());
-			game.returnToLobby(player);
-		}
-
-		if (worldManager.getActiveWorld() != active) {
-			worldManager.nextSlot();
-		}
+		reset();
 	}
 
 	@Override
@@ -134,6 +118,7 @@ public class MissileWars extends JavaPlugin {
 			gameManager.stop();
 			gameManager = null;
 		}
+		worldManager.unloadWorldSlot();
 	}
 
 	public static MissileWars getPlugin() {
@@ -198,8 +183,14 @@ public class MissileWars extends JavaPlugin {
 			}
 		} else if (cmd.getName().equalsIgnoreCase("reset")) {
 			if (sender.hasPermission("missilewars.reset")) {
-				MissileWars.getPlugin(MissileWars.class).onDisable();
-				MissileWars.getPlugin(MissileWars.class).onEnable();
+				List<Player> players=game.getWorld().getPlayers();
+				for(Player player:players) {
+					player.getInventory().clear();
+					player.teleport(Bukkit.getWorld("lobby").getSpawnLocation());
+				}
+				worldManager.reset();
+				reset();
+				for(Player player:players) game.returnToLobby(player);
 			} else {
 				sender.sendMessage(NO_PERMISSION);
 			}
