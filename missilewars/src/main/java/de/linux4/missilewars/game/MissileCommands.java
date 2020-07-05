@@ -60,10 +60,7 @@ public class MissileCommands {
 				location.getZ() + position.get(2)
 		);
 		Block movedOut=rel.clone().add(0,0,moveOut).getBlock();
-		if(!force && movedOut.getType()!=Material.AIR) {
-			movedOut.setType(Material.STONE);
-			return false;
-		}
+		if(!force && movedOut.getType()!=Material.AIR) return false;
 		MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
 		return true;
 	}
