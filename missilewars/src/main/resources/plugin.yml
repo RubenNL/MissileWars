@@ -37,3 +37,6 @@ commands:
    reset:
        description: reset
        usage: /<command>
+   mw:
+       description: join game
+       usage: /<command>

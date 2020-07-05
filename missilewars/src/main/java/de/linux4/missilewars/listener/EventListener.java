@@ -17,6 +17,7 @@
 package de.linux4.missilewars.listener;
 
 import de.linux4.missilewars.game.MissileCommands;
+import de.linux4.missilewars.world.WorldManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -39,13 +40,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -83,6 +78,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
+		if(event.getBlock().getWorld()!=game.getWorld()) return;
 		String[] lines = event.getLines();
 		for (int i = 0; i < lines.length; i++) {
 			String line = lines[i];
@@ -93,6 +89,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
+		if(event.getPlayer().getWorld()!=game.getWorld()) return;
 		final Player p = event.getPlayer();
 		final Action action = event.getAction();
 		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
@@ -118,10 +115,11 @@ public class EventListener implements Listener {
 						}
 					}
 				}
-				String strippedName=name.toLowerCase().substring(2);
-				if(MissileCommands.positions.containsKey(strippedName)) {
+				String strippedName = name.toLowerCase().substring(2);
+				if (MissileCommands.positions.containsKey(strippedName)) {
 					event.setCancelled(true);
-					if(MissileCommands.spawnObject(game.getPlayerTeam(p),strippedName,l,55)) SpawnItems.removeFromInv(p);
+					if (MissileCommands.spawnObject(game.getPlayerTeam(p), strippedName, l, 55))
+						SpawnItems.removeFromInv(p);
 					else p.sendMessage("invalid location!");
 				}
 			}
@@ -136,16 +134,6 @@ public class EventListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		event.getPlayer().setExp(0);
-		event.getPlayer().setLevel(0);
-		event.getPlayer().setScoreboard(game.getScoreboard());
-		game.returnToLobby(event.getPlayer());
-		event.setJoinMessage(
-				prefix + game.getPlayerPrefix(event.getPlayer()) + event.getPlayer().getName() + "§a joined the game");
-	}
-
-	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		event.setQuitMessage(
 				prefix + game.getPlayerPrefix(event.getPlayer()) + event.getPlayer().getName() + "§c left the game");
@@ -154,6 +142,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
+		if(event.getPlayer().getWorld()!=game.getWorld()) return;
 		Player player = event.getPlayer();
 		String message = event.getMessage();
 		message = ChatColor.translateAlternateColorCodes('&', message);
@@ -163,11 +152,13 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
+		if(event.getEntity().getWorld()!=game.getWorld()) return;
 		event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
+		if(event.getPlayer().getWorld()!=game.getWorld()) return;
 		Player player = event.getPlayer();
 		if (game.getPlayerTeam(player) == PlayerTeam.GREEN) {
 			event.setRespawnLocation(game.getGreenSpawn());
@@ -180,13 +171,12 @@ public class EventListener implements Listener {
 					game.spectate(event.getPlayer(), true);
 				}
 			}, 2L);
-		} else {
-			event.setRespawnLocation(game.getLobbySpawn());
 		}
 	}
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
+		if(event.getEntity().getWorld()!=game.getWorld()) return;
 		if (MissileWars.getMWConfig().isKeepInventory()) {
 			event.setKeepInventory(true);
 		}
@@ -209,6 +199,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
+		if(event.getEntity().getWorld()!=game.getWorld()) return;
 		if (!game.gameStarted && event.getCause() != DamageCause.VOID) {
 			event.setCancelled(true);
 		} else if (event.getCause() == DamageCause.VOID) {
@@ -225,6 +216,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onDamageByEntity(EntityDamageByEntityEvent event) {
+		if(event.getEntity().getWorld()!=game.getWorld()) return;
 		if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
 			Player p1 = (Player) event.getEntity();
 			Player p2 = (Player) event.getDamager();
@@ -236,16 +228,19 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
+		if(event.getWhoClicked().getWorld()!=game.getWorld()) return;
 		event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
+		if(event.getPlayer().getWorld()!=game.getWorld()) return;
 		event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
+		if(event.getPlayer().getWorld()!=game.getWorld()) return;
 		if (event.getBlock().getType() == Material.NETHER_PORTAL || event.getBlock().getType() == Material.OBSIDIAN) {
 			event.setCancelled(true);
 		}
@@ -253,6 +248,7 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
+		if(event.getPlayer().getWorld()!=game.getWorld()) return;
 		if (event.getReason().equalsIgnoreCase("Flying is not enabled on this server")) { // stop kicking falling
 																							// players
 			final Player p = event.getPlayer();
@@ -264,7 +260,9 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onItemPickup(EntityPickupItemEvent event) {
+		if(event.getEntity().getWorld()!=game.getWorld()) return;
 		if (event.getEntity() instanceof Player) {
+			if(game.getPlayerTeam((Player) event.getEntity())==PlayerTeam.NONE) return;
 			final Player p = (Player) event.getEntity();
 			if (game.getPlayerTeam(p) == PlayerTeam.SPEC && p.getGameMode() != GameMode.CREATIVE) {
 				event.setCancelled(true);
@@ -276,12 +274,13 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onBlockExplode(BlockExplodeEvent event) {
-
+		if(event.blockList().get(0).getWorld()!=game.getWorld()) return;
 		AnimatedExplosion.createExplosion(event.blockList());
 	}
 
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event) {
+		if(event.getLocation().getWorld()!=game.getWorld()) return;
 		if(event.getEntity().getType()== EntityType.FIREBALL) {
 			for (Block block : event.blockList()) {
 				if (block.getType() == Material.NETHER_PORTAL) {
@@ -295,8 +294,16 @@ public class EventListener implements Listener {
 
 	@EventHandler
 	public void onBlockPhysics(BlockPhysicsEvent event) {
+		if(event.getBlock().getWorld()!=game.getWorld()) return;
 		if (!game.gameStarted) {
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
+		if(event.getFrom()==game.getWorld()) {
+			game.removeAllTeams(event.getPlayer());
 		}
 	}
 }
