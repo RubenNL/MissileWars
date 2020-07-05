@@ -40,28 +40,15 @@ public class WorldManager {
 
 	public WorldManager() {
 		mapname = Bukkit.getBukkitVersion().contains("1.13") ? "map" : "map14";
-		init();
+		reset();
 	}
 
-	private void init() {
-		stop();
-		loadWorldSlot();
-	}
-
-	public void stop() {
-		unloadWorldSlot();
-		deleteWorldSlot();
-	}
 	public void reset() {
 		unloadWorldSlot();
-		loadWorldSlot();
+		getWorld();
 	}
 
-	public World getWorld() {
-		return Bukkit.getWorld(NAME_PREFIX);
-	}
-
-	private void unloadWorldSlot() {
+	public void unloadWorldSlot() {
 		Bukkit.unloadWorld(NAME_PREFIX, false);
 	}
 	private void deleteWorldSlot() {
@@ -71,7 +58,9 @@ public class WorldManager {
 			e.printStackTrace();
 		}
 	}
-	private void loadWorldSlot() {
+	public World getWorld() {
+		World world=Bukkit.getWorld(NAME_PREFIX);
+		if(world!=null) return world;
 		File mapFolder = new File(Bukkit.getWorldContainer(), NAME_PREFIX);
 		if(!mapFolder.exists()) {
 			try {
@@ -100,7 +89,9 @@ public class WorldManager {
 			}
 		}
 		WorldCreator wc = new WorldCreator(NAME_PREFIX);
-		World world=Bukkit.getServer().createWorld(wc);
+		world=Bukkit.getServer().createWorld(wc);
 		world.setAutoSave(false);
+		world.setKeepSpawnInMemory(false);
+		return world;
 	}
 }
