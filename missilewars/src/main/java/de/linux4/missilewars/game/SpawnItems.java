@@ -66,7 +66,7 @@ public class SpawnItems {
 		shield.setCustomName("§1Shield");
 		shield.setCustomNameVisible(false);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-			if (shield != null) MissileCommands.spawnObject(game.getPlayerTeam(player),"shield",shield.getLocation(),70);
+			if (shield != null) MissileCommands.spawnObject(game.getPlayerTeam(player),"shield",shield.getLocation(),70,true);
 		}, 20L);
 	}
 }

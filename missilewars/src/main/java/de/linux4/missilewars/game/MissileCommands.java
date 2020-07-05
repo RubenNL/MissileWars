@@ -18,7 +18,9 @@ package de.linux4.missilewars.game;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 
 import de.linux4.missilewars.MissileWars;
@@ -32,15 +34,18 @@ public class MissileCommands {
 
 	private CommandSender console = Bukkit.getConsoleSender();
 
-	public static boolean spawnObject(Game.PlayerTeam team,String objectName, Location location,int maxDistance) {
+	public static boolean spawnObject(Game.PlayerTeam team,String objectName, Location location,int maxDistance,boolean force) {
 		List<Integer> position = new ArrayList<>(positions.get(objectName));
 		String teamName;
+		int moveOut;
 		switch (team) {
 			case GREEN:
+				moveOut=-1;
 				position.set(2,-position.get(2));
 				teamName="green";
 				break;
 			case RED:
+				moveOut=1;
 				teamName="red";
 				break;
 			default:
@@ -54,11 +59,16 @@ public class MissileCommands {
 				location.getY() + position.get(1),
 				location.getZ() + position.get(2)
 		);
+		Block movedOut=rel.clone().add(0,0,moveOut).getBlock();
+		if(!force && movedOut.getType()!=Material.AIR) {
+			movedOut.setType(Material.STONE);
+			return false;
+		}
 		MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
 		return true;
 	}
 	public static boolean spawnObject(Game.PlayerTeam team, String objectName, World world) {
-		return spawnObject(team,objectName,new Location(world,0,0,0),100);
+		return spawnObject(team,objectName,new Location(world,0,0,0),100,true);
 	}
 	public static Map<String, List<Integer>> positions=new HashMap<>();
 	static {
