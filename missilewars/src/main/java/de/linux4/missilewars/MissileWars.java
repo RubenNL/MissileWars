@@ -118,7 +118,7 @@ public class MissileWars extends JavaPlugin {
 			gameManager.stop();
 			gameManager = null;
 		}
-		worldManager.unloadWorldSlot();
+		worldManager.unloadWorld();
 	}
 
 	public static MissileWars getPlugin() {

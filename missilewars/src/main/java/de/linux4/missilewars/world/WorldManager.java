@@ -44,19 +44,12 @@ public class WorldManager {
 	}
 
 	public void reset() {
-		unloadWorldSlot();
+		unloadWorld();
 		getWorld();
 	}
 
-	public void unloadWorldSlot() {
+	public void unloadWorld() {
 		Bukkit.unloadWorld(NAME_PREFIX, false);
-	}
-	private void deleteWorldSlot() {
-		try {
-			FileUtils.deleteDirectory(new File(Bukkit.getWorldContainer(), NAME_PREFIX));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	public World getWorld() {
 		World world=Bukkit.getWorld(NAME_PREFIX);
