@@ -21,14 +21,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import de.linux4.missilewars.game.GameManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.Player;
 
 public class WorldManager {
 
@@ -43,10 +46,16 @@ public class WorldManager {
 	}
 
 	private void init() {
+		unloadWorldSlot(Slot.A);
 		deleteWorldSlot(Slot.A);
-		deleteWorldSlot(Slot.B);
+		//unloadWorldSlot(Slot.B);
 		loadWorldSlot(Slot.A);
-		loadWorldSlot(Slot.B);
+		//loadWorldSlot(Slot.B);
+	}
+
+	public void reset() {
+		unloadWorldSlot(Slot.A);
+		loadWorldSlot(Slot.A);
 	}
 
 	public World getActiveWorld() {
@@ -58,49 +67,52 @@ public class WorldManager {
 	}
 
 	public void nextSlot() {
-		deleteWorldSlot(active);
+		unloadWorldSlot(active);
 		loadWorldSlot(active);
-		active = active.nextSlot();
+		//active = active.nextSlot();
 	}
 
+	private void unloadWorldSlot(Slot slot) {
+		System.out.println("unload:"+Bukkit.unloadWorld(NAME_PREFIX + slot, false));
+	}
 	private void deleteWorldSlot(Slot slot) {
-		Bukkit.unloadWorld(NAME_PREFIX + slot, false);
 		try {
 			FileUtils.deleteDirectory(new File(Bukkit.getWorldContainer(), NAME_PREFIX + slot));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 	private void loadWorldSlot(Slot slot) {
 		File mapFolder = new File(Bukkit.getWorldContainer(), NAME_PREFIX + slot);
-		try {
-			ZipFile zip = new ZipFile(
-					new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
-			Enumeration<? extends ZipEntry> entries = zip.entries();
-			while (entries.hasMoreElements()) {
-				ZipEntry entry = entries.nextElement();
-				if (entry.getName().startsWith(mapname + "/")) {
-					File file = new File(mapFolder,
-							entry.getName().substring((mapname + "/").length(), entry.getName().length()));
-					if (entry.isDirectory()) {
-						file.mkdirs();
-					} else {
-						InputStream in = zip.getInputStream(entry);
-						FileOutputStream out = new FileOutputStream(file);
-						IOUtils.copy(in, out);
-						in.close();
-						out.close();
+		if(!mapFolder.exists()) {
+			try {
+				ZipFile zip = new ZipFile(
+						new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
+				Enumeration<? extends ZipEntry> entries = zip.entries();
+				while (entries.hasMoreElements()) {
+					ZipEntry entry = entries.nextElement();
+					if (entry.getName().startsWith(mapname + "/")) {
+						File file = new File(mapFolder,
+								entry.getName().substring((mapname + "/").length(), entry.getName().length()));
+						if (entry.isDirectory()) {
+							file.mkdirs();
+						} else {
+							InputStream in = zip.getInputStream(entry);
+							FileOutputStream out = new FileOutputStream(file);
+							IOUtils.copy(in, out);
+							in.close();
+							out.close();
+						}
 					}
 				}
+				zip.close();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			zip.close();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		WorldCreator wc = new WorldCreator(NAME_PREFIX + slot);
-		wc.environment(World.Environment.NORMAL);
-		Bukkit.getServer().createWorld(wc);
+		World world=Bukkit.getServer().createWorld(wc);
+		world.setAutoSave(false);
 	}
 
 	public Slot getActiveSlot() {
@@ -112,10 +124,11 @@ public class WorldManager {
 	}
 
 	public enum Slot {
-		A, B;
+		A;//, B;
 
 		public Slot nextSlot() {
-			return this == A ? B : A;
+			//return this == A ? B : A;
+			return A;
 		}
 	}
 }
