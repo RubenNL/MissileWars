@@ -353,10 +353,6 @@ public class Game {
 		player.teleport(redSpawn);
 	}
 
-	public Location getLobbySpawn() {
-		return lobby;
-	}
-
 	public Location getGreenSpawn() {
 		return greenSpawn;
 	}
