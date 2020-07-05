@@ -203,7 +203,7 @@ public class MissileWars extends JavaPlugin {
 			} else {
 				sender.sendMessage(NO_PERMISSION);
 			}
-		} else if (cmd.getName().equalsIgnoreCase("join")) {
+		} else if (cmd.getName().equalsIgnoreCase("mw")) {
 			Player senderPlayer=(Player) sender;
 			senderPlayer.setExp(0);
 			senderPlayer.setLevel(0);
