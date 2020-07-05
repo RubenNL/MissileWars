@@ -59,7 +59,7 @@ public class MissileWars extends JavaPlugin {
 
 	private void reset() {
 		onDisable();
-		game = new Game(worldManager.getActiveWorld());
+		game = new Game(worldManager.getWorld());
 		gameManager = new GameManager(game, this);
 		joinTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new JoinChecker(game), 0L, 5L);
 		gameManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameManager, 0L, 5L);
@@ -100,22 +100,11 @@ public class MissileWars extends JavaPlugin {
 			e.printStackTrace();
 		}
 
-		World active;
-		if (worldManager == null) {
-			worldManager = new WorldManager();
-			active = worldManager.getActiveWorld();
-		} else {
-			active = worldManager.getInactiveWorld();
-		}
+		if (worldManager == null) worldManager = new WorldManager();
 
 		worldedit = new WorldEditUtil(schematics);
 		commands = new MissileCommands();
 		reset();
-		for (Player player : worldManager.getActiveWorld().getPlayers()) {
-			player.setScoreboard(game.getScoreboard());
-			game.returnToLobby(player);
-		}
-		worldManager.nextSlot();
 	}
 
 	@Override
@@ -129,6 +118,7 @@ public class MissileWars extends JavaPlugin {
 			gameManager.stop();
 			gameManager = null;
 		}
+		worldManager.stop();
 	}
 
 	public static MissileWars getPlugin() {

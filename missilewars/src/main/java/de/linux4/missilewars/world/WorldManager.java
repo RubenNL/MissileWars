@@ -35,55 +35,44 @@ import org.bukkit.entity.Player;
 
 public class WorldManager {
 
-	private Slot active;
-	private static final String NAME_PREFIX = "game";
+	private static final String NAME_PREFIX = "mw";
 	private String mapname;
 
 	public WorldManager() {
-		this.active = Slot.A;
 		mapname = Bukkit.getBukkitVersion().contains("1.13") ? "map" : "map14";
 		init();
 	}
 
 	private void init() {
-		unloadWorldSlot(Slot.A);
-		deleteWorldSlot(Slot.A);
-		//unloadWorldSlot(Slot.B);
-		loadWorldSlot(Slot.A);
-		//loadWorldSlot(Slot.B);
+		stop();
+		loadWorldSlot();
 	}
 
+	public void stop() {
+		unloadWorldSlot();
+		deleteWorldSlot();
+	}
 	public void reset() {
-		unloadWorldSlot(Slot.A);
-		loadWorldSlot(Slot.A);
+		unloadWorldSlot();
+		loadWorldSlot();
 	}
 
-	public World getActiveWorld() {
-		return Bukkit.getWorld(NAME_PREFIX + active);
+	public World getWorld() {
+		return Bukkit.getWorld(NAME_PREFIX);
 	}
 
-	public World getInactiveWorld() {
-		return Bukkit.getWorld(NAME_PREFIX + active.nextSlot());
+	private void unloadWorldSlot() {
+		Bukkit.unloadWorld(NAME_PREFIX, false);
 	}
-
-	public void nextSlot() {
-		unloadWorldSlot(active);
-		loadWorldSlot(active);
-		//active = active.nextSlot();
-	}
-
-	private void unloadWorldSlot(Slot slot) {
-		System.out.println("unload:"+Bukkit.unloadWorld(NAME_PREFIX + slot, false));
-	}
-	private void deleteWorldSlot(Slot slot) {
+	private void deleteWorldSlot() {
 		try {
-			FileUtils.deleteDirectory(new File(Bukkit.getWorldContainer(), NAME_PREFIX + slot));
+			FileUtils.deleteDirectory(new File(Bukkit.getWorldContainer(), NAME_PREFIX));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	private void loadWorldSlot(Slot slot) {
-		File mapFolder = new File(Bukkit.getWorldContainer(), NAME_PREFIX + slot);
+	private void loadWorldSlot() {
+		File mapFolder = new File(Bukkit.getWorldContainer(), NAME_PREFIX);
 		if(!mapFolder.exists()) {
 			try {
 				ZipFile zip = new ZipFile(
@@ -110,25 +99,8 @@ public class WorldManager {
 				e.printStackTrace();
 			}
 		}
-		WorldCreator wc = new WorldCreator(NAME_PREFIX + slot);
+		WorldCreator wc = new WorldCreator(NAME_PREFIX);
 		World world=Bukkit.getServer().createWorld(wc);
 		world.setAutoSave(false);
-	}
-
-	public Slot getActiveSlot() {
-		return active;
-	}
-
-	public Slot getInactiveSlot() {
-		return active.nextSlot();
-	}
-
-	public enum Slot {
-		A;//, B;
-
-		public Slot nextSlot() {
-			//return this == A ? B : A;
-			return A;
-		}
 	}
 }
