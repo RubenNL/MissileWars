@@ -22,7 +22,7 @@ keepinventory: true
 # Max amount of each item (0 for unlimited, should be >= 0)
 item-cap: 1
 # Resupply timer in seconds (should be > 0)
-resupply-timer: 11
+resupply-timer: 15
 # animated explosions toggle, causes a lot of lag.
 animated-explosions: false
 # prevents teamgreef, but also blocks spawning missiles when base is getting small. needs fixing.
