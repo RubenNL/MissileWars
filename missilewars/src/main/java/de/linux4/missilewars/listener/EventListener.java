@@ -299,9 +299,14 @@ public class EventListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
-		if(event.getFrom()==game.getWorld()) {
-			game.removeAllTeams(event.getPlayer());
+	public void onChangedWorld(PlayerChangedWorldEvent event) {
+		Player player=event.getPlayer();
+		if(event.getFrom()==game.getWorld()) game.removeAllTeams(player);
+		if(event.getPlayer().getWorld()==game.getWorld()) {
+			player.setExp(0);
+			player.setLevel(0);
+			player.setScoreboard(game.getScoreboard());
+			game.returnToLobby(player);
 		}
 	}
 }
