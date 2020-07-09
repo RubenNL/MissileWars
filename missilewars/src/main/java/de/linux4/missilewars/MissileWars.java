@@ -193,12 +193,6 @@ public class MissileWars extends JavaPlugin {
 			} else {
 				sender.sendMessage(NO_PERMISSION);
 			}
-		} else if (cmd.getName().equalsIgnoreCase("mw")) {
-			Player senderPlayer=(Player) sender;
-			senderPlayer.setExp(0);
-			senderPlayer.setLevel(0);
-			senderPlayer.setScoreboard(game.getScoreboard());
-			game.returnToLobby(senderPlayer);
 		}
 		return true;
 	}
