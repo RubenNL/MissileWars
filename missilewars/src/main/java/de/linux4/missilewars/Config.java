@@ -32,7 +32,7 @@ public class Config {
 	private boolean fireworks;
 	private int beginCountdown;
 	private int endCountdown;
-
+	private boolean fairGame;
 	public Config(File file) {
 		FileConfiguration conf = YamlConfiguration.loadConfiguration(file);
 		maxPlayers = conf.getInt("max-players", 24);
@@ -44,6 +44,7 @@ public class Config {
 		fireworks = conf.getBoolean("fireworks",true);
 		beginCountdown = conf.getInt("beginCountdown", 60);
 		endCountdown = conf.getInt("endCountdown", 30);
+		fairGame = conf.getBoolean("fairGame",true);
 		if (maxPlayers % 2 != 0 || maxPlayers <= 0) {
 			throw new IllegalArgumentException("max-players should be an even number > 0");
 		}
@@ -56,33 +57,26 @@ public class Config {
 			throw new IllegalArgumentException("item-cap should be >= 0");
 		}
 	}
-
 	public int getMaxPlayers() {
 		return maxPlayers;
 	}
-
 	public boolean isKeepInventory() {
 		return keepInventory;
 	}
-
 	public int getItemCap() {
 		return itemCap;
 	}
-
 	public int getResupplyTimer() {
 		return resupplyTimer;
 	}
-
 	public boolean animatedExplosions() {return animatedExplosions;}
-
 	public boolean preventMissilesInOwnBase() {return preventMissilesInOwnBase;}
-
 	public boolean fireworks() {return fireworks;}
-
 	public int getBeginCountdown() {
 		return beginCountdown;
 	}
 	public int getEndCountdown() {
 		return endCountdown;
 	}
+	public boolean fairGame() {return fairGame;}
 }
