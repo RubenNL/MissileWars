@@ -43,8 +43,7 @@ import org.bukkit.inventory.ItemStack;
 import de.linux4.missilewars.MissileWars;
 import de.linux4.missilewars.game.Game.PlayerTeam;
 
-import static de.linux4.missilewars.game.Game.PlayerTeam.GREEN;
-import static de.linux4.missilewars.game.Game.PlayerTeam.RED;
+import static de.linux4.missilewars.game.Game.PlayerTeam.*;
 
 public class EventListener implements Listener {
 
@@ -316,5 +315,15 @@ public class EventListener implements Listener {
 			player.setScoreboard(game.getScoreboard());
 			game.returnToLobby(player);
 		}
+	}
+	@EventHandler
+	private void onPlayerMove(PlayerMoveEvent event) {
+		if(event.getTo().getWorld()!=game.getWorld()) return;
+		Player player = event.getPlayer();
+		if(game.getPlayerTeam(player)!=NONE) return;
+		Location loc = event.getTo();
+		loc = new Location(loc.getWorld(), (int) loc.getX(), (int) loc.getY(), (int) loc.getZ(), 0, 0);
+		if (game.getGreenJoin().contains(loc)) game.greenAddPlayer(player);
+		else if (game.getRedJoin().contains(loc)) game.redAddPlayer(player);
 	}
 }

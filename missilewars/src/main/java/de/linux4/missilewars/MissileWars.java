@@ -27,7 +27,6 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,7 +36,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.linux4.missilewars.game.Game;
 import de.linux4.missilewars.game.GameManager;
 import de.linux4.missilewars.game.ItemManager;
-import de.linux4.missilewars.game.JoinChecker;
 import de.linux4.missilewars.game.MissileCommands;
 import de.linux4.missilewars.listener.EventListener;
 import de.linux4.missilewars.world.WorldEditUtil;
@@ -50,7 +48,6 @@ public class MissileWars extends JavaPlugin {
 	public static final String NO_PERMISSION = PREFIX + "§cNo Permissions!";
 	public static final String NO_CONSOLE_CMD = PREFIX + "§4Only players can execute this command!";
 	private GameManager gameManager;
-	private int joinTaskId = 0;
 	private int gameManagerTaskId = 0;
 	private static MissileWars plugin;
 	private static MissileCommands commands;
@@ -71,7 +68,6 @@ public class MissileWars extends JavaPlugin {
 		onDisable();
 		game = new Game(worldManager.getWorld());
 		gameManager = new GameManager(game, this);
-		joinTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new JoinChecker(game), 0L, 5L);
 		gameManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameManager, 0L, 5L);
 		Bukkit.getPluginManager().registerEvents(new EventListener(game), this);
 		for(Player player:players) game.returnToLobby(player);
@@ -121,7 +117,6 @@ public class MissileWars extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		HandlerList.unregisterAll(this);
-		Bukkit.getScheduler().cancelTask(joinTaskId);
 		Bukkit.getScheduler().cancelTask(gameManagerTaskId);
 		Bukkit.getScheduler().cancelTasks(this);
 		game = null;
