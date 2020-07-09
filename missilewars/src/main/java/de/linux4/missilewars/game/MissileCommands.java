@@ -63,8 +63,7 @@ public class MissileCommands {
 		if(rel.getZ()>50 && team==RED) force=true;
 		Block movedOut=rel.clone().add(0,0,moveOut).getBlock();
 		if(!force && movedOut.getType()!=Material.AIR) return false;
-		MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
-		return true;
+		return MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
 	}
 	public static boolean spawnObject(Game.PlayerTeam team, String objectName, World world) {
 		return spawnObject(team,objectName,new Location(world,0,0,0),100,true);

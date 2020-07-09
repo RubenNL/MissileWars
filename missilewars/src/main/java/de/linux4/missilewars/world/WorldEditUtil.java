@@ -41,21 +41,23 @@ public class WorldEditUtil {
 		this.schematics = schematicFolder;
 	}
 
-	public void pasteSchematic(String name, Location loc, boolean ignoreAir) {
+	public boolean pasteSchematic(String name, Location loc, boolean ignoreAir) {
 		try {
 			File schematic = new File(schematics, name + ".schem");
 			ClipboardFormat format = ClipboardFormats.findByFile(schematic);
 			ClipboardReader reader = format.getReader(new FileInputStream(schematic));
 			Clipboard clipboard = reader.read();
+			if(Math.abs(loc.getZ())<72 && Math.abs(loc.getZ())+clipboard.getDimensions().getZ()>72 && Math.abs(-27-loc.getX())<23) return false;
 			com.sk89q.worldedit.world.World adaptedWorld = BukkitAdapter.adapt(loc.getWorld());
 			EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld, -1);
 			Operation operation = new ClipboardHolder(clipboard).createPaste(editSession)
 					.to(BlockVector3.at(loc.getX(), loc.getY(), loc.getZ())).ignoreAirBlocks(ignoreAir).build();
 			Operations.complete(operation);
 			editSession.flushSession();
+			return true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return false;
 	}
-
 }
