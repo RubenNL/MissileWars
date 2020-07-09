@@ -33,6 +33,8 @@ public class Config {
 	private int beginCountdown;
 	private int endCountdown;
 	private boolean fairGame;
+	private String lobbyWorldName;
+	private String worldName;
 	public Config(File file) {
 		FileConfiguration conf = YamlConfiguration.loadConfiguration(file);
 		maxPlayers = conf.getInt("max-players", 24);
@@ -45,6 +47,8 @@ public class Config {
 		beginCountdown = conf.getInt("beginCountdown", 60);
 		endCountdown = conf.getInt("endCountdown", 30);
 		fairGame = conf.getBoolean("fairGame",true);
+		lobbyWorldName = conf.getString("lobbyWorldName","lobby");
+		worldName=conf.getString("worldName","mw");
 		if (maxPlayers % 2 != 0 || maxPlayers <= 0) {
 			throw new IllegalArgumentException("max-players should be an even number > 0");
 		}
@@ -79,4 +83,6 @@ public class Config {
 		return endCountdown;
 	}
 	public boolean fairGame() {return fairGame;}
+	public String getLobbyWorldName() { return lobbyWorldName;}
+	public String getWorldName() {return worldName;}
 }

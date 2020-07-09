@@ -64,7 +64,7 @@ public class MissileWars extends JavaPlugin {
 			players=game.getWorld().getPlayers();
 			for(Player player:players) {
 				player.getInventory().clear();
-				player.teleport(Bukkit.getWorld("lobby").getSpawnLocation());
+				player.teleport(Bukkit.getWorld(config.getLobbyWorldName()).getSpawnLocation());
 			}
 		}
 		worldManager.reset();
