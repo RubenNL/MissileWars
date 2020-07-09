@@ -59,6 +59,8 @@ public class MissileCommands {
 				location.getY() + position.get(1),
 				location.getZ() + position.get(2)
 		);
+		if(rel.getZ()<-50 && team==GREEN) force=true;
+		if(rel.getZ()>50 && team==RED) force=true;
 		Block movedOut=rel.clone().add(0,0,moveOut).getBlock();
 		if(!force && movedOut.getType()!=Material.AIR) return false;
 		MissileWars.getWorldEditUtil().pasteSchematic(teamName+"_"+objectName, rel, true);
