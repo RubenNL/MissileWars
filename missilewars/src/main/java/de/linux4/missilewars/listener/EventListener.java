@@ -91,6 +91,15 @@ public class EventListener implements Listener {
 		if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR) {
 			final ItemStack item = p.getInventory().getItemInMainHand();
 			String name = item != null && item.getItemMeta() != null ? item.getItemMeta().getDisplayName() : "";
+			if (fireball.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
+				spawnItems.spawnFireball(p);
+				event.setCancelled(true);
+				return;
+			} else if (shield.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
+				spawnItems.spawnShield(p);
+				event.setCancelled(true);
+				return;
+			}
 			if (action != Action.RIGHT_CLICK_AIR) {
 				final Block clicked = event.getClickedBlock();
 				final Location l = clicked.getLocation();
@@ -120,13 +129,6 @@ public class EventListener implements Listener {
 						else p.sendMessage("invalid location!");
 					}
 				}
-			}
-			if (fireball.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-				spawnItems.spawnFireball(p);
-				event.setCancelled(true);
-			} else if (shield.getItemMeta().getDisplayName().equalsIgnoreCase(name)) {
-				spawnItems.spawnShield(p);
-				event.setCancelled(true);
 			}
 		}
 	}

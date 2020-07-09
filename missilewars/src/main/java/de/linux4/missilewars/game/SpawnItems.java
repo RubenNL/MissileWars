@@ -65,8 +65,10 @@ public class SpawnItems {
 		removeFromInv(player);
 		shield.setCustomName("§1Shield");
 		shield.setCustomNameVisible(false);
+		shield.setBounce(false);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-			if (shield != null) MissileCommands.spawnObject(game.getPlayerTeam(player),"shield",shield.getLocation(),70,true);
+			Snowball nextSnowball=(Snowball) Bukkit.getEntity(shield.getUniqueId());
+			if(nextSnowball!=null && !nextSnowball.isDead() && !nextSnowball.isOnGround()) MissileCommands.spawnObject(game.getPlayerTeam(player),"shield",shield.getLocation(),70,true);
 		}, 20L);
 	}
 }
