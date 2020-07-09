@@ -62,7 +62,6 @@ public class GameManager implements Runnable {
 			}
 			itemManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new ItemManager(game), 0L,
 					MissileWars.getMWConfig().getResupplyTimer() * 20L);
-			winCheckerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new WinChecker(game), 0L, 5L);
 			game.setGameStarted(true);
 		}
 	}

@@ -33,7 +33,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import de.linux4.missilewars.MissileWars;
 import de.linux4.missilewars.game.Game.PlayerTeam;
 
-public class WinChecker implements Runnable {
+public class WinChecker {
 
 	private Location red0;
 	private Location red1;
@@ -53,21 +53,34 @@ public class WinChecker implements Runnable {
 	private static final FireworkEffect greenFirework = FireworkEffect.builder().flicker(true).trail(true)
 			.withColor(Color.LIME).withColor(Color.GREEN).withTrail().with(Type.BALL_LARGE).build();
 
-	public WinChecker(Game game) {
+	public WinChecker(Game game,Game.PlayerTeam team) {
 		this.game = game;
 		fireworkLoc = game.getSpecSpawn();
 		World world = game.getWorld();
-		red0 = new Location(world, -28, 52, -72);
-		red1 = new Location(world, -26, 52, -72);
-		green0 = new Location(world, -26, 52, 72);
-		green1 = new Location(world, -28, 52, 72);
-
-	}
-
-	@Override
-	public void run() {
-		if (game == null) {
+		if(team==PlayerTeam.GREEN) {
+			game.gameStopped = true;
+			greenWin = true;
+			MissileCommands.spawnObject(PlayerTeam.GREEN,"win",game.getWorld());
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				p.sendMessage(MissileWars.PREFIX + "§aTeam green has won the game!");
+				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {
+					game.spectate(p, false);
+				}
+			}
+			firework(greenFirework);
 			return;
+		}
+		if(team==PlayerTeam.RED) {
+			game.gameStopped = true;
+			redWin = true;
+			MissileCommands.spawnObject(PlayerTeam.RED,"win",game.getWorld());
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				p.sendMessage(MissileWars.PREFIX + "§cTeam red has won the game!");
+				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {
+					game.spectate(p, false);
+				}
+			}
+			firework(redFirework);
 		}
 		if (!taskScheduled && (redWin || greenWin)) {
 			taskScheduled = true;
@@ -96,33 +109,6 @@ public class WinChecker implements Runnable {
 		} else if (greenWin) {
 			firework(greenFirework);
 			return;
-		}
-		if (red0.getBlock().getType() != Material.NETHER_PORTAL
-				|| red1.getBlock().getType() != Material.NETHER_PORTAL) {
-			game.gameStopped = true;
-			greenWin = true;
-			MissileCommands.spawnObject(PlayerTeam.GREEN,"win",game.getWorld());
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				p.sendMessage(MissileWars.PREFIX + "§aTeam green has won the game!");
-				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {
-					game.spectate(p, false);
-				}
-			}
-			firework(greenFirework);
-			return;
-		}
-		if (green0.getBlock().getType() != Material.NETHER_PORTAL
-				|| green1.getBlock().getType() != Material.NETHER_PORTAL) {
-			game.gameStopped = true;
-			redWin = true;
-			MissileCommands.spawnObject(PlayerTeam.RED,"win",game.getWorld());
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				p.sendMessage(MissileWars.PREFIX + "§cTeam red has won the game!");
-				if (game.getPlayerTeam(p) == PlayerTeam.GREEN || game.getPlayerTeam(p) == PlayerTeam.RED) {
-					game.spectate(p, false);
-				}
-			}
-			firework(redFirework);
 		}
 	}
 

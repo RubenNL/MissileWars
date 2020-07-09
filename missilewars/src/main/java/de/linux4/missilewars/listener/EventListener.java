@@ -16,7 +16,7 @@
  ******************************************************************************/
 package de.linux4.missilewars.listener;
 
-import de.linux4.missilewars.game.MissileCommands;
+import de.linux4.missilewars.game.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -41,10 +41,10 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
 import de.linux4.missilewars.MissileWars;
-import de.linux4.missilewars.game.AnimatedExplosion;
-import de.linux4.missilewars.game.Game;
 import de.linux4.missilewars.game.Game.PlayerTeam;
-import de.linux4.missilewars.game.SpawnItems;
+
+import static de.linux4.missilewars.game.Game.PlayerTeam.GREEN;
+import static de.linux4.missilewars.game.Game.PlayerTeam.RED;
 
 public class EventListener implements Listener {
 
@@ -160,9 +160,9 @@ public class EventListener implements Listener {
 	public void onRespawn(PlayerRespawnEvent event) {
 		if(event.getPlayer().getWorld()!=game.getWorld()) return;
 		Player player = event.getPlayer();
-		if (game.getPlayerTeam(player) == PlayerTeam.GREEN) {
+		if (game.getPlayerTeam(player) == GREEN) {
 			event.setRespawnLocation(game.getGreenSpawn());
-		} else if (game.getPlayerTeam(player) == PlayerTeam.RED) {
+		} else if (game.getPlayerTeam(player) == RED) {
 			event.setRespawnLocation(game.getRedSpawn());
 		} else if (game.getPlayerTeam(player) == PlayerTeam.SPEC) {
 			event.setRespawnLocation(game.getSpecSpawn());
@@ -287,6 +287,12 @@ public class EventListener implements Listener {
 					event.setCancelled(true);
 					return;
 				}
+			}
+		}
+		for(Block block:event.blockList()) {
+			if(block.getType()==Material.NETHER_PORTAL) {
+				new WinChecker(game,block.getY()>0?RED:GREEN);
+				return;
 			}
 		}
 		AnimatedExplosion.createExplosion(event.blockList());
