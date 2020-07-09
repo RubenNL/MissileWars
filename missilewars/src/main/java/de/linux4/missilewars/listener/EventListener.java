@@ -290,7 +290,7 @@ public class EventListener implements Listener {
 		}
 		for(Block block:event.blockList()) {
 			if(block.getType()==Material.NETHER_PORTAL) {
-				new WinChecker(game,block.getZ()>0?RED:GREEN);
+				new WinActions(game,block.getZ()>0?RED:GREEN);
 				return;
 			}
 		}
