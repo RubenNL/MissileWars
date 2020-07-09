@@ -19,6 +19,7 @@ package de.linux4.missilewars;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -26,6 +27,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -56,13 +58,23 @@ public class MissileWars extends JavaPlugin {
 	private static WorldManager worldManager;
 	private static Config config;
 
-	private void reset() {
+	public void reset() {
+		List<Player> players=new ArrayList<>();
+		if(game!=null) {
+			players=game.getWorld().getPlayers();
+			for(Player player:players) {
+				player.getInventory().clear();
+				player.teleport(Bukkit.getWorld("lobby").getSpawnLocation());
+			}
+		}
+		worldManager.reset();
 		onDisable();
 		game = new Game(worldManager.getWorld());
 		gameManager = new GameManager(game, this);
 		joinTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new JoinChecker(game), 0L, 5L);
 		gameManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameManager, 0L, 5L);
 		Bukkit.getPluginManager().registerEvents(new EventListener(game), this);
+		for(Player player:players) game.returnToLobby(player);
 	}
 	@Override
 	public void onEnable() {
@@ -182,14 +194,7 @@ public class MissileWars extends JavaPlugin {
 			}
 		} else if (cmd.getName().equalsIgnoreCase("reset")) {
 			if (sender.hasPermission("missilewars.reset")) {
-				List<Player> players=game.getWorld().getPlayers();
-				for(Player player:players) {
-					player.getInventory().clear();
-					player.teleport(Bukkit.getWorld("lobby").getSpawnLocation());
-				}
-				worldManager.reset();
 				reset();
-				for(Player player:players) game.returnToLobby(player);
 			} else {
 				sender.sendMessage(NO_PERMISSION);
 			}
