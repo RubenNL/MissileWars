@@ -33,3 +33,5 @@ fireworks: false
 beginCountdown: 60
 # time before game resets, after first portal is destroyed.
 endCountdown: 30
+# must be a fair game, blocks players from joining team when that team has more players than the other.
+fairGame: true
