@@ -151,6 +151,7 @@ public class MissileWars extends JavaPlugin {
 					}
 					new ItemManager(game).dEquip((Player) sender, a);
 					sender.sendMessage(PREFIX + "§aYou have been equipped!");
+					Bukkit.broadcastMessage(PREFIX+"Player "+sender.getName()+" has been equipped!");
 				} else {
 					sender.sendMessage(NO_CONSOLE_CMD);
 				}
