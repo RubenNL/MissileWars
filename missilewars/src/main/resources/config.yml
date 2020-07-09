@@ -35,3 +35,7 @@ beginCountdown: 60
 endCountdown: 30
 # must be a fair game, blocks players from joining team when that team has more players than the other.
 fairGame: true
+# world to TP user to when restarting game.
+lobbyWorldName: 'lobby'
+# world for the actual game.
+worldName: 'mw'

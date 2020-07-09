@@ -23,14 +23,13 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import de.linux4.missilewars.MissileWars;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
 public class WorldManager {
-
-	private static final String NAME_PREFIX = "mw";
 	private String mapname;
 
 	public WorldManager() {
@@ -44,12 +43,12 @@ public class WorldManager {
 	}
 
 	public void unloadWorld() {
-		Bukkit.unloadWorld(NAME_PREFIX, false);
+		Bukkit.unloadWorld(MissileWars.getMWConfig().getWorldName(), false);
 	}
 	public World getWorld() {
-		World world=Bukkit.getWorld(NAME_PREFIX);
+		World world=Bukkit.getWorld(MissileWars.getMWConfig().getWorldName());
 		if(world!=null) return world;
-		File mapFolder = new File(Bukkit.getWorldContainer(), NAME_PREFIX);
+		File mapFolder = new File(Bukkit.getWorldContainer(), MissileWars.getMWConfig().getWorldName());
 		if(!mapFolder.exists()) {
 			try {
 				ZipFile zip = new ZipFile(
@@ -76,7 +75,7 @@ public class WorldManager {
 				e.printStackTrace();
 			}
 		}
-		WorldCreator wc = new WorldCreator(NAME_PREFIX);
+		WorldCreator wc = new WorldCreator(MissileWars.getMWConfig().getWorldName());
 		world=Bukkit.getServer().createWorld(wc);
 		world.setAutoSave(false);
 		world.setKeepSpawnInMemory(false);
