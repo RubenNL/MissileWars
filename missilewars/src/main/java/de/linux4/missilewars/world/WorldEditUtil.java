@@ -47,7 +47,7 @@ public class WorldEditUtil {
 			ClipboardFormat format = ClipboardFormats.findByFile(schematic);
 			ClipboardReader reader = format.getReader(new FileInputStream(schematic));
 			Clipboard clipboard = reader.read();
-			if(Math.abs(loc.getZ())<72 && Math.abs(loc.getZ())+clipboard.getDimensions().getZ()>72 && Math.abs(-27-loc.getX())<23) return false;
+			if(Math.abs(loc.getZ())<73 && Math.abs(loc.getZ())+clipboard.getDimensions().getZ()>72 && Math.abs(-27-loc.getX())<23) return false;
 			com.sk89q.worldedit.world.World adaptedWorld = BukkitAdapter.adapt(loc.getWorld());
 			EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(adaptedWorld, -1);
 			Operation operation = new ClipboardHolder(clipboard).createPaste(editSession)
