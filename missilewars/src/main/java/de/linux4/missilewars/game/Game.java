@@ -208,7 +208,7 @@ public class Game {
 	}
 
 	public World getWorld() {
-		return world;
+		return MissileWars.getPlugin().getWorld();
 	}
 
 	public void greenAddPlayer(Player player) {

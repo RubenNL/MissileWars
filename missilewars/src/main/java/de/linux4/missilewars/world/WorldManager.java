@@ -16,69 +16,89 @@
  ******************************************************************************/
 package de.linux4.missilewars.world;
 
+import de.linux4.missilewars.MissileWars;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import de.linux4.missilewars.MissileWars;
-import org.apache.commons.io.IOUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
 
 public class WorldManager {
 	private String mapname;
 
 	public WorldManager() {
 		mapname = Bukkit.getBukkitVersion().contains("1.13") ? "map" : "map14";
-		reset();
+		if(worldFolderExits()) deleteWorld();
+		createWorldFolder();
 	}
 
 	public void reset() {
 		unloadWorld();
-		getWorld();
+		loadWorld();
 	}
 
 	public void unloadWorld() {
 		Bukkit.unloadWorld(MissileWars.getMWConfig().getWorldName(), false);
 	}
+	public void loadWorld() {
+		WorldCreator wc = new WorldCreator(MissileWars.getMWConfig().getWorldName());
+		World world = Bukkit.getServer().createWorld(wc);
+		world.setAutoSave(false);
+		world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS,false);
+		world.setGameRule(GameRule.DO_LIMITED_CRAFTING,false);
+		world.setKeepSpawnInMemory(false);
+	}
 	public World getWorld() {
-		World world=Bukkit.getWorld(MissileWars.getMWConfig().getWorldName());
-		if(world!=null) return world;
-		File mapFolder = new File(Bukkit.getWorldContainer(), MissileWars.getMWConfig().getWorldName());
-		if(!mapFolder.exists()) {
-			try {
-				ZipFile zip = new ZipFile(
-						new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
-				Enumeration<? extends ZipEntry> entries = zip.entries();
-				while (entries.hasMoreElements()) {
-					ZipEntry entry = entries.nextElement();
-					if (entry.getName().startsWith(mapname + "/")) {
-						File file = new File(mapFolder,
-								entry.getName().substring((mapname + "/").length()));
-						if (entry.isDirectory()) {
-							file.mkdirs();
-						} else {
-							InputStream in = zip.getInputStream(entry);
-							FileOutputStream out = new FileOutputStream(file);
-							IOUtils.copy(in, out);
-							in.close();
-							out.close();
-						}
+		return Bukkit.getWorld(MissileWars.getMWConfig().getWorldName());
+	}
+	public File getWorldFolder() {
+		return new File(Bukkit.getWorldContainer(), MissileWars.getMWConfig().getWorldName());
+	}
+	public boolean worldFolderExits() {
+		return getWorldFolder().exists();
+	}
+	public boolean deleteWorld() {
+		try {
+			FileUtils.deleteDirectory(getWorldFolder());
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public void createWorldFolder() {
+		try {
+			ZipFile zip = new ZipFile(
+					new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()));
+			Enumeration<? extends ZipEntry> entries = zip.entries();
+			while (entries.hasMoreElements()) {
+				ZipEntry entry = entries.nextElement();
+				if (entry.getName().startsWith(mapname + "/")) {
+					File file = new File(getWorldFolder(),
+							entry.getName().substring((mapname + "/").length()));
+					if (entry.isDirectory()) {
+						file.mkdirs();
+					} else {
+						InputStream in = zip.getInputStream(entry);
+						FileOutputStream out = new FileOutputStream(file);
+						IOUtils.copy(in, out);
+						in.close();
+						out.close();
 					}
 				}
-				zip.close();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+			zip.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		WorldCreator wc = new WorldCreator(MissileWars.getMWConfig().getWorldName());
-		world=Bukkit.getServer().createWorld(wc);
-		world.setAutoSave(false);
-		world.setKeepSpawnInMemory(false);
-		return world;
 	}
 }

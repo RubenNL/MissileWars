@@ -308,7 +308,10 @@ public class EventListener implements Listener {
 	@EventHandler
 	public void onChangedWorld(PlayerChangedWorldEvent event) {
 		Player player=event.getPlayer();
-		if(event.getFrom()==game.getWorld()) game.removeAllTeams(player);
+		if(event.getFrom()==game.getWorld()) {
+			game.removeAllTeams(player);
+			if(plugin.getWorld().getPlayers().size()==0 &&!game.gameStopped) plugin.unloadWorld();
+		}
 		if(event.getPlayer().getWorld()==game.getWorld()) {
 			player.setExp(0);
 			player.setLevel(0);

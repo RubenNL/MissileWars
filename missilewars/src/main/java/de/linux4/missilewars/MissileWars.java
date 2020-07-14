@@ -27,10 +27,15 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.linux4.missilewars.game.Game;
@@ -41,7 +46,7 @@ import de.linux4.missilewars.listener.EventListener;
 import de.linux4.missilewars.world.WorldEditUtil;
 import de.linux4.missilewars.world.WorldManager;
 
-public class MissileWars extends JavaPlugin {
+public class MissileWars extends JavaPlugin implements Listener {
 
 	public static final String PREFIX = "§8» §cMissileWars §8┃ ";
 	private Game game;
@@ -54,9 +59,12 @@ public class MissileWars extends JavaPlugin {
 	private static WorldEditUtil worldedit;
 	private static WorldManager worldManager;
 	private static Config config;
-
+	private EventListener eventListener;
+	List<Player> players=new ArrayList<>();
+	public World getWorld() {
+		return worldManager.getWorld();
+	}
 	public void reset() {
-		List<Player> players=new ArrayList<>();
 		if(game!=null) {
 			players=game.getWorld().getPlayers();
 			for(Player player:players) {
@@ -65,17 +73,35 @@ public class MissileWars extends JavaPlugin {
 			}
 		}
 		worldManager.reset();
-		onDisable();
-		game = new Game(worldManager.getWorld());
+	}
+	public void unloadWorld() {
+		worldManager.unloadWorld();
+	}
+	@EventHandler
+	private void onWorldLoad(WorldLoadEvent event) {
+		if(!event.getWorld().getName().equals(MissileWars.getMWConfig().getWorldName())) return;
+		game = new Game(getWorld());
 		gameManager = new GameManager(game, this);
 		gameManagerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameManager, 0L, 5L);
-		Bukkit.getPluginManager().registerEvents(new EventListener(game), this);
+		eventListener=new EventListener(game);
+		Bukkit.getPluginManager().registerEvents(eventListener, this);
 		for(Player player:players) game.returnToLobby(player);
+	}
+	@EventHandler
+	private void onWorldUnLoad(WorldUnloadEvent event) {
+		if(!event.getWorld().getName().equals(MissileWars.getMWConfig().getWorldName())) return;
+		HandlerList.unregisterAll(eventListener);
+		Bukkit.getScheduler().cancelTask(gameManagerTaskId);
+		Bukkit.getScheduler().cancelTasks(this);
+		game = null;
+		if (gameManager != null) {
+			gameManager.stop();
+			gameManager = null;
+		}
 	}
 	@Override
 	public void onEnable() {
 		plugin = this;
-
 		this.saveResource("config.yml", false);
 		try {
 			config = new Config(new File(this.getDataFolder(), "config.yml"));
@@ -108,22 +134,13 @@ public class MissileWars extends JavaPlugin {
 		}
 
 		if (worldManager == null) worldManager = new WorldManager();
-
+		Bukkit.getPluginManager().registerEvents(this, this);
 		worldedit = new WorldEditUtil(schematics);
 		commands = new MissileCommands();
-		reset();
 	}
 
 	@Override
 	public void onDisable() {
-		HandlerList.unregisterAll(this);
-		Bukkit.getScheduler().cancelTask(gameManagerTaskId);
-		Bukkit.getScheduler().cancelTasks(this);
-		game = null;
-		if (gameManager != null) {
-			gameManager.stop();
-			gameManager = null;
-		}
 		worldManager.unloadWorld();
 	}
 
@@ -190,6 +207,7 @@ public class MissileWars extends JavaPlugin {
 			}
 		} else if (cmd.getName().equalsIgnoreCase("reset")) {
 			if (sender.hasPermission("missilewars.reset")) {
+				game.gameStopped=true;
 				reset();
 			} else {
 				sender.sendMessage(NO_PERMISSION);
