@@ -25,6 +25,11 @@ import org.bukkit.inventory.ItemStack;
 
 import de.linux4.missilewars.MissileWars;
 import de.linux4.missilewars.game.Game.PlayerTeam;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 public class ItemManager implements Runnable {
 
@@ -34,7 +39,10 @@ public class ItemManager implements Runnable {
 
 	public ItemManager(Game game) {
 		this.game = game;
-		ItemStack arrow = new ItemStack(Material.ARROW, 3);
+		ItemStack arrow = new ItemStack(Material.TIPPED_ARROW, 3);
+		PotionMeta meta=(PotionMeta) arrow.getItemMeta();
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.LEVITATION,3,64),false);
+		arrow.setItemMeta(meta);
 		items = new ItemStack[] { arrow, game.fireball, game.tomahawk, game.juggernaut, game.shieldBuster,
 				game.guardian, game.lightning, game.shield };
 	}
