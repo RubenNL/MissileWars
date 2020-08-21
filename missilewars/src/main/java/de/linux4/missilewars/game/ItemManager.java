@@ -41,7 +41,8 @@ public class ItemManager implements Runnable {
 		this.game = game;
 		ItemStack arrow = new ItemStack(Material.TIPPED_ARROW, 3);
 		PotionMeta meta=(PotionMeta) arrow.getItemMeta();
-		meta.addCustomEffect(new PotionEffect(PotionEffectType.LEVITATION,3,64),false);
+		meta.clearCustomEffects();
+		meta.addCustomEffect(new PotionEffect(PotionEffectType.LEVITATION,3,64),true);
 		arrow.setItemMeta(meta);
 		items = new ItemStack[] { arrow, game.fireball, game.tomahawk, game.juggernaut, game.shieldBuster,
 				game.guardian, game.lightning, game.shield };
